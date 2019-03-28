@@ -7,12 +7,36 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
+// // Alert defines whether alert is enabled or not
+// type Alert struct {
+// 	Enabled             bool              `json:"enabled"`
+// 	LabelSelector       map[string]string `json:"labelSelector"`
+// 	PrometheusNamespace string            `json:"prometheusNamespace"`
+// }
+
+// // Dashboard defines whether dashboard is enabled or not
+// type Dashboard struct {
+// 	Enabled          bool              `json:"enabled"`
+// 	LabelSelector    map[string]string `json:"labelSelector"`
+// 	GrafanaNamespace string            `json:"grafanaNamespace"`
+// }
+
+// // StorageType defines the type of storage which should be monitored for alerts
+// type StorageType struct {
+// 	TypeName string `json:"name"`
+// 	Version  string `json:"version"`
+// 	// Alert     Alert     `json:"alert"`
+// 	// Dashboard Dashboard `json:"dashboard"`
+// }
+
 // CephAlertSpec defines the desired state of CephAlert
 // +k8s:openapi-gen=true
 type CephAlertSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "operator-sdk generate k8s" to regenerate code after modifying this file
 	// Add custom validation using kubebuilder tags: https://book.kubebuilder.io/beyond_basics/generating_crd.html
+	TypeName string `json:"name"`
+	Version  string `json:"version"`
 }
 
 // CephAlertStatus defines the observed state of CephAlert

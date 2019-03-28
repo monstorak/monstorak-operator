@@ -85,6 +85,7 @@ type ReconcileCephAlert struct {
 func (r *ReconcileCephAlert) Reconcile(request reconcile.Request) (reconcile.Result, error) {
 	reqLogger := log.WithValues("Request.Namespace", request.Namespace, "Request.Name", request.Name)
 	reqLogger.Info("Reconciling CephAlert")
+	reqLogger.Info("My another new Reconciling CephAlert")
 
 	// Fetch the CephAlert instance
 	instance := &alertv1alpha1.CephAlert{}
@@ -100,6 +101,8 @@ func (r *ReconcileCephAlert) Reconcile(request reconcile.Request) (reconcile.Res
 		return reconcile.Result{}, err
 	}
 
+	reqLogger.Info("Reached here")
+	reqLogger.Info("StorageType Details: " + instance.Spec.Version + " 3x")
 	// Define a new Pod object
 	pod := newPodForCR(instance)
 

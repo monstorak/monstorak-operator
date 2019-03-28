@@ -5,3 +5,5 @@ metadata:
 spec:
   # Add fields here
   size: 3
+  type: ceph
+  version: 3
