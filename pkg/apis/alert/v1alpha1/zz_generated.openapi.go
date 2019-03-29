@@ -13,9 +13,9 @@ import (
 
 func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenAPIDefinition {
 	return map[string]common.OpenAPIDefinition{
-		"monstorak/pkg/apis/alert/v1alpha1.CephAlert":       schema_pkg_apis_alert_v1alpha1_CephAlert(ref),
-		"monstorak/pkg/apis/alert/v1alpha1.CephAlertSpec":   schema_pkg_apis_alert_v1alpha1_CephAlertSpec(ref),
-		"monstorak/pkg/apis/alert/v1alpha1.CephAlertStatus": schema_pkg_apis_alert_v1alpha1_CephAlertStatus(ref),
+		"github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.CephAlert":       schema_pkg_apis_alert_v1alpha1_CephAlert(ref),
+		"github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.CephAlertSpec":   schema_pkg_apis_alert_v1alpha1_CephAlertSpec(ref),
+		"github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.CephAlertStatus": schema_pkg_apis_alert_v1alpha1_CephAlertStatus(ref),
 	}
 }
 
@@ -46,19 +46,19 @@ func schema_pkg_apis_alert_v1alpha1_CephAlert(ref common.ReferenceCallback) comm
 					},
 					"spec": {
 						SchemaProps: spec.SchemaProps{
-							Ref: ref("monstorak/pkg/apis/alert/v1alpha1.CephAlertSpec"),
+							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.CephAlertSpec"),
 						},
 					},
 					"status": {
 						SchemaProps: spec.SchemaProps{
-							Ref: ref("monstorak/pkg/apis/alert/v1alpha1.CephAlertStatus"),
+							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.CephAlertStatus"),
 						},
 					},
 				},
 			},
 		},
 		Dependencies: []string{
-			"k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta", "monstorak/pkg/apis/alert/v1alpha1.CephAlertSpec", "monstorak/pkg/apis/alert/v1alpha1.CephAlertStatus"},
+			"github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.CephAlertSpec", "github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.CephAlertStatus", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
 	}
 }
 
