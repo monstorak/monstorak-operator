@@ -5,3 +5,11 @@ metadata:
 spec:
   # Add fields here
   size: 3
+  storageName: ceph
+  storageVersion: "3.10"
+  storageAlert:
+    enabled: "True"
+    prometheusNamespace: "somenamespace"
+  storageDashboard:
+    enabled: "False"
+    grafanaNamespace: "somegrafananamespace"

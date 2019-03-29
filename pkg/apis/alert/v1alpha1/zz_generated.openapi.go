@@ -67,10 +67,35 @@ func schema_pkg_apis_alert_v1alpha1_CephAlertSpec(ref common.ReferenceCallback) 
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
 				Description: "CephAlertSpec defines the desired state of CephAlert",
-				Properties:  map[string]spec.Schema{},
+				Properties: map[string]spec.Schema{
+					"storageName": {
+						SchemaProps: spec.SchemaProps{
+							Description: "INSERT ADDITIONAL SPEC FIELDS - desired state of cluster Important: Run \"operator-sdk generate k8s\" to regenerate code after modifying this file Add custom validation using kubebuilder tags: https://book.kubebuilder.io/beyond_basics/generating_crd.html",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"storageVersion": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
+					"storageAlert": {
+						SchemaProps: spec.SchemaProps{
+							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.AlertDetails"),
+						},
+					},
+					"storageDashboard": {
+						SchemaProps: spec.SchemaProps{
+							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.DashboardDetails"),
+						},
+					},
+				},
 			},
 		},
-		Dependencies: []string{},
+		Dependencies: []string{
+			"github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.AlertDetails", "github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.DashboardDetails"},
 	}
 }
 

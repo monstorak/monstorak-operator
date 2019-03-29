@@ -99,7 +99,7 @@ func (r *ReconcileCephAlert) Reconcile(request reconcile.Request) (reconcile.Res
 		// Error reading the object - requeue the request.
 		return reconcile.Result{}, err
 	}
-
+	reqLogger.Info("StorageDetails: " + instance.Spec.StorageAlert.String())
 	// Define a new Pod object
 	pod := newPodForCR(instance)
 
