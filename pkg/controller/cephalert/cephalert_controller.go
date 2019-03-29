@@ -3,7 +3,7 @@ package cephalert
 import (
 	"context"
 
-	alertv1alpha1 "monstorak/pkg/apis/alert/v1alpha1"
+	alertv1alpha1 "github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1"
 
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"

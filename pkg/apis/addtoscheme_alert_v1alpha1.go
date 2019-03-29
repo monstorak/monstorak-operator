@@ -1,7 +1,7 @@
 package apis
 
 import (
-	"monstorak/pkg/apis/alert/v1alpha1"
+	"github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1"
 )
 
 func init() {

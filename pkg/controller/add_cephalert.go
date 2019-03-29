@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"monstorak/pkg/controller/cephalert"
+	"github.com/monstorak/monstorak/pkg/controller/cephalert"
 )
 
 func init() {
