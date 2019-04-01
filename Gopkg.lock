@@ -63,15 +63,15 @@
   version = "v1.1.1"
 
 [[projects]]
-  digest = "1:5d66e99bd7619956962ef12dd2e04031512dd38cd0b4490c837b5e3028b0482c"
+  digest = "1:1302bdd23af4264a095d48c2c28660a8ecf2e02454ce172cef5cb946029a1383"
   name = "github.com/emicklei/go-restful"
   packages = [
     ".",
     "log",
   ]
   pruneopts = "NT"
-  revision = "e64cccdfee8896c036b8a88d560c5e3ae15d904d"
-  version = "v2.9.1"
+  revision = "b9bbc5664f49b6deec52393bd68f39830687a347"
+  version = "v2.9.3"
 
 [[projects]]
   digest = "1:81466b4218bf6adddac2572a30ac733a9255919bc2f470b4827a317bd4ee1756"
@@ -306,7 +306,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:5f10ebb985f080702685a1f3e45431d3815c6c7d794f2ad75bcf42faaea3cf75"
+  digest = "1:1cc09ef62949757cd67d720faaa05708b8573e37d8c62c12480a96c88a349342"
   name = "github.com/operator-framework/operator-sdk"
   packages = [
     "pkg/k8sutil",
@@ -316,7 +316,7 @@
     "version",
   ]
   pruneopts = "NT"
-  revision = "2761657e4cccb42836c8ffca7b6bcacc378e3e1d"
+  revision = "e2aec8e8af7904e0ab23f4e88b10b1e77d47d828"
 
 [[projects]]
   digest = "1:93b1d84c5fa6d1ea52f4114c37714cddd84d5b78f151b62bb101128dd51399bf"
@@ -384,17 +384,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:412affe2853f32d2b75fc1beaec432e220945cb593d7b8718059c5029c9db60c"
+  digest = "1:9b88d30d00199d49df4290b275cdd9be4871d1e9bdac2b2030880c7d9fc3c522"
   name = "github.com/prometheus/procfs"
-  packages = [
-    ".",
-    "internal/util",
-    "iostats",
-    "nfs",
-    "xfs",
-  ]
+  packages = ["."]
   pruneopts = "NT"
-  revision = "55ae3d9d557340b5bc24cd8aa5f6fa2c2ab31352"
+  revision = "af7bedc223fba51343f25a6fa7aba84355d0357a"
 
 [[projects]]
   digest = "1:fcef1ce61da6f8f6f115154fb0e0e5b159fe11656839ba1e6061372711c013ee"
@@ -468,7 +462,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:f9d2f13baed365df2f09249c839e783cc66ff4f5287d1399a2d558e4ffe7f106"
+  digest = "1:318eeba3eb64a2c2b6fdaa988b6d08dadde9ec7b6ff909d72dd87735be65f7d9"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -479,7 +473,7 @@
     "idna",
   ]
   pruneopts = "NT"
-  revision = "710a502c58a2a4b2d7417a4e24ccb96d8dc13fa3"
+  revision = "74de082e2cca95839e88aa0aeee5aadf6ce7710f"
 
 [[projects]]
   branch = "master"
@@ -497,14 +491,22 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:9d531f81319846d063202616c0dd87bbf03b7f15c23136cba085b2b79432b4ec"
+  digest = "1:dddcecff308c7862d83399d61f6c1f64ed6d734ff56c7e3f7435811b9f5bc014"
+  name = "golang.org/x/sync"
+  packages = ["errgroup"]
+  pruneopts = "NT"
+  revision = "e225da77a7e68af35c70ccbf71af2b83e6acac3c"
+
+[[projects]]
+  branch = "master"
+  digest = "1:d758a7035f59cc59b8b1380e0dcfdde798bee43db2156a2f24f37edf2d575fde"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "NT"
-  revision = "f49334f85ddcf0f08d7fb6dd7363e9e6d6b777eb"
+  revision = "9eb1bfa1ce65ae8a6ff3114b0aaf9a41a6cf3560"
 
 [[projects]]
   digest = "1:8c74f97396ed63cc2ef04ebb5fc37bb032871b8fd890a25991ed40974b00cd2a"
@@ -540,7 +542,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:4a61950db29ae6706a316d731d70bc54f46c9338c2ec859341a856970bd65e4e"
+  digest = "1:e7aee9cc1e6a7c560e93d1ceea331a6955b66e90a6a08cfd8ba9d01044f92d24"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -556,7 +558,7 @@
     "internal/semver",
   ]
   pruneopts = "NT"
-  revision = "79af862e6737e9b6ea995ccf9e8eaccd41ef1523"
+  revision = "aef51cc3777c6a88d6834b42444edffdac4860fa"
 
 [[projects]]
   digest = "1:711179d92dbef98932acd7afd0dab80b4cf2d97f099f3285c9ba8fa451809fec"
@@ -803,7 +805,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:a6612481318c8360823cb6e157cf103c5eb03a8a9e24f58bfc1021ebd9cde3de"
+  digest = "1:06449c9193d3d1f9375b97d1ce8a3f7a59d531c69ca34a6b0663cf3c144c2178"
   name = "k8s.io/gengo"
   packages = [
     "args",
@@ -816,7 +818,7 @@
     "types",
   ]
   pruneopts = "T"
-  revision = "bc9033e9ec9e0cec1552e9af7c079cb878dfc511"
+  revision = "e17681d19d3ac4837a019ece36c2a0ec31ffe985"
 
 [[projects]]
   digest = "1:29f93bb84d907a2c035e729e19d66fe52165d8c905cb3ef1920140d76ae6afaf"
@@ -912,13 +914,16 @@
     "github.com/operator-framework/operator-sdk/pkg/log/zap",
     "github.com/operator-framework/operator-sdk/pkg/metrics",
     "github.com/operator-framework/operator-sdk/version",
+    "github.com/pkg/errors",
     "github.com/spf13/pflag",
+    "golang.org/x/sync/errgroup",
     "k8s.io/api/core/v1",
     "k8s.io/apimachinery/pkg/api/errors",
     "k8s.io/apimachinery/pkg/apis/meta/v1",
     "k8s.io/apimachinery/pkg/runtime",
     "k8s.io/apimachinery/pkg/runtime/schema",
     "k8s.io/apimachinery/pkg/types",
+    "k8s.io/apimachinery/pkg/util/yaml",
     "k8s.io/client-go/plugin/pkg/client/auth/gcp",
     "k8s.io/code-generator/cmd/client-gen",
     "k8s.io/code-generator/cmd/conversion-gen",

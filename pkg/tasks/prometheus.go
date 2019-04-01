@@ -1,8 +1,8 @@
 package tasks
 
 import (
-	"github.com/monstorak/pkg/client"
-	"github.com/monstorak/pkg/manifests"
+	"github.com/monstorak/monstorak/pkg/client"
+	"github.com/monstorak/monstorak/pkg/manifests"
 	"github.com/pkg/errors"
 )
 
