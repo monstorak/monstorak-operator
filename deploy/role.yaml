@@ -50,5 +50,6 @@ rules:
   - alert.monstorak.org
   resources:
   - '*'
+  - cephalerts
   verbs:
   - '*'

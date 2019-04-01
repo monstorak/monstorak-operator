@@ -22,6 +22,33 @@ spec:
         metadata:
           type: object
         spec:
+          properties:
+            storageAlert:
+              properties:
+                enabled:
+                  type: boolean
+                labelSelector:
+                  additionalProperties:
+                    type: string
+                  type: object
+                prometheusNamespace:
+                  type: string
+              type: object
+            storageDashboard:
+              properties:
+                enabled:
+                  type: boolean
+                grafanaNamespace:
+                  type: string
+                labelSelector:
+                  additionalProperties:
+                    type: string
+                  type: object
+              type: object
+            storageName:
+              type: string
+            storageVersion:
+              type: string
           type: object
         status:
           type: object
