@@ -13,17 +13,17 @@ import (
 
 func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenAPIDefinition {
 	return map[string]common.OpenAPIDefinition{
-		"github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.CephAlert":       schema_pkg_apis_alert_v1alpha1_CephAlert(ref),
-		"github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.CephAlertSpec":   schema_pkg_apis_alert_v1alpha1_CephAlertSpec(ref),
-		"github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.CephAlertStatus": schema_pkg_apis_alert_v1alpha1_CephAlertStatus(ref),
+		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlerts":       schema_pkg_apis_alerts_v1alpha1_StorageAlerts(ref),
+		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertsSpec":   schema_pkg_apis_alerts_v1alpha1_StorageAlertsSpec(ref),
+		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertsStatus": schema_pkg_apis_alerts_v1alpha1_StorageAlertsStatus(ref),
 	}
 }
 
-func schema_pkg_apis_alert_v1alpha1_CephAlert(ref common.ReferenceCallback) common.OpenAPIDefinition {
+func schema_pkg_apis_alerts_v1alpha1_StorageAlerts(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "CephAlert is the Schema for the cephalerts API",
+				Description: "StorageAlerts is the Schema for the storagealerts API",
 				Properties: map[string]spec.Schema{
 					"kind": {
 						SchemaProps: spec.SchemaProps{
@@ -46,64 +46,65 @@ func schema_pkg_apis_alert_v1alpha1_CephAlert(ref common.ReferenceCallback) comm
 					},
 					"spec": {
 						SchemaProps: spec.SchemaProps{
-							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.CephAlertSpec"),
+							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertsSpec"),
 						},
 					},
 					"status": {
 						SchemaProps: spec.SchemaProps{
-							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.CephAlertStatus"),
+							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertsStatus"),
 						},
 					},
 				},
 			},
 		},
 		Dependencies: []string{
-			"github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.CephAlertSpec", "github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.CephAlertStatus", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
+			"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertsSpec", "github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertsStatus", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
 	}
 }
 
-func schema_pkg_apis_alert_v1alpha1_CephAlertSpec(ref common.ReferenceCallback) common.OpenAPIDefinition {
+func schema_pkg_apis_alerts_v1alpha1_StorageAlertsSpec(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "CephAlertSpec defines the desired state of CephAlert",
+				Description: "StorageAlertsSpec defines the desired state of StorageAlerts",
 				Properties: map[string]spec.Schema{
 					"storageName": {
 						SchemaProps: spec.SchemaProps{
-							Description: "INSERT ADDITIONAL SPEC FIELDS - desired state of cluster Important: Run \"operator-sdk generate k8s\" to regenerate code after modifying this file Add custom validation using kubebuilder tags: https://book.kubebuilder.io/beyond_basics/generating_crd.html",
+							Description: "StorageName provides the name of the storage type",
 							Type:        []string{"string"},
 							Format:      "",
 						},
 					},
 					"storageVersion": {
 						SchemaProps: spec.SchemaProps{
-							Type:   []string{"string"},
-							Format: "",
+							Description: "StorageVersion provides the current version of the storage type used",
+							Type:        []string{"string"},
+							Format:      "",
 						},
 					},
 					"storageAlert": {
 						SchemaProps: spec.SchemaProps{
-							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.AlertDetails"),
+							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.AlertDetails"),
 						},
 					},
 					"storageDashboard": {
 						SchemaProps: spec.SchemaProps{
-							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.DashboardDetails"),
+							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.DashboardDetails"),
 						},
 					},
 				},
 			},
 		},
 		Dependencies: []string{
-			"github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.AlertDetails", "github.com/monstorak/monstorak/pkg/apis/alert/v1alpha1.DashboardDetails"},
+			"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.AlertDetails", "github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.DashboardDetails"},
 	}
 }
 
-func schema_pkg_apis_alert_v1alpha1_CephAlertStatus(ref common.ReferenceCallback) common.OpenAPIDefinition {
+func schema_pkg_apis_alerts_v1alpha1_StorageAlertsStatus(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "CephAlertStatus defines the observed state of CephAlert",
+				Description: "StorageAlertsStatus defines the observed state of StorageAlerts",
 				Properties:  map[string]spec.Schema{},
 			},
 		},

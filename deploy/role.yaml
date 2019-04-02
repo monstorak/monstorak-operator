@@ -50,6 +50,12 @@ rules:
   - alert.monstorak.org
   resources:
   - '*'
-  - cephalerts
+  - storagealerts
+  verbs:
+  - '*'
+- apiGroups:
+  - alerts.monstorak.org
+  resources:
+  - '*'
   verbs:
   - '*'
