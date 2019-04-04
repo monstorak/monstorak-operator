@@ -22,16 +22,16 @@ spec:
   # not needed for now, will work on multi-cluster later
   cluster: CLUSTER_NAME
   # Only 1 of external | storage
-  storages:
+  storage:
     # Initially only ceph will be supported
     # and later extend it to others
-    - name: [ceph | gluster | cassandra | ...]
-      version: STORAGE_VERSION_USED
-      alert:
+    - storageType: [ceph | gluster | cassandra | ...]
+      storageVersion: STORAGE_VERSION_USED
+      storageAlert:
       - enabled: [yes | no]
         labelSelctor: MAP_OF_KEY_VALUE_PAIRS
         prometheusNamespace: OPTIONAL_STR_DEFINES_PROMETHEUS_NAMESPACE
-      dashboard: 
+      storageDashboard: 
       - enabled: [yes | no]
         labelSelctor: MAP_OF_KEY_VALUE_PAIRS
         grafanaNamespace: OPTIONAL_STR_DEFINES_GRAFANA_NAMESPACE
