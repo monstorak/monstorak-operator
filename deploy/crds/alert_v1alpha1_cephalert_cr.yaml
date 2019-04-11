@@ -1,7 +1,0 @@
-apiVersion: alert.monstorak.org/v1alpha1
-kind: CephAlert
-metadata:
-  name: example-cephalert
-spec:
-  # Add fields here
-  size: 3
