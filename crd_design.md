@@ -29,11 +29,11 @@ spec:
       storageVersion: STORAGE_VERSION_USED
       storageAlert:
       - enabled: [yes | no]
-        labelSelctor: MAP_OF_KEY_VALUE_PAIRS
+        prometheusSelctor: MAP_OF_KEY_VALUE_PAIRS
         prometheusNamespace: OPTIONAL_STR_DEFINES_PROMETHEUS_NAMESPACE
       storageDashboard: 
       - enabled: [yes | no]
-        labelSelctor: MAP_OF_KEY_VALUE_PAIRS
+        grafanaSelctor: MAP_OF_KEY_VALUE_PAIRS
         grafanaNamespace: OPTIONAL_STR_DEFINES_GRAFANA_NAMESPACE
     ...
   nodeAffinity:
