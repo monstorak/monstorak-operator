@@ -1,0 +1,44 @@
+{
+    "dependencies": [
+        {
+            "name": "ceph-mixins",
+            "source": {
+                "git": {
+                    "remote": "https://github.com/ceph/ceph-mixins",
+                    "subdir": ""
+                }
+            },
+            "version": "1798d5ee5cbbdc3f1e00f22ff0cb8d014e45fd00"
+        },
+        {
+            "name": "gluster-mixins",
+            "source": {
+                "git": {
+                    "remote": "https://github.com/gluster/gluster-mixins",
+                    "subdir": ""
+                }
+            },
+            "version": "a6a02d24ffe92ee38fcfb80f38fc75c4f952e626"
+        },
+        {
+            "name": "grafonnet",
+            "source": {
+                "git": {
+                    "remote": "https://github.com/grafana/grafonnet-lib",
+                    "subdir": "grafonnet"
+                }
+            },
+            "version": "d270f529db9eb750425a173188c534ab92532f47"
+        },
+        {
+            "name": "grafana-builder",
+            "source": {
+                "git": {
+                    "remote": "https://github.com/grafana/jsonnet-libs",
+                    "subdir": "grafana-builder"
+                }
+            },
+            "version": "2c635c3310c6e61720871ac94d6d2572e37b83f7"
+        }
+    ]
+}

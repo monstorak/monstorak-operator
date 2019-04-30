@@ -1,0 +1,24 @@
+{
+    "dependencies": [
+        {
+            "name": "ceph-mixins",
+            "source": {
+                "git": {
+                    "remote": "https://github.com/ceph/ceph-mixins",
+                    "subdir": ""
+                }
+            },
+            "version": "master"
+        },
+        {
+            "name": "gluster-mixins",
+            "source": {
+                "git": {
+                    "remote": "https://github.com/gluster/gluster-mixins",
+                    "subdir": ""
+                }
+            },
+            "version": "master"
+        }
+    ]
+}

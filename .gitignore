@@ -77,3 +77,5 @@ tags
 # End of https://www.gitignore.io/api/go,vim,emacs,visualstudiocode
 /vendor/
 /deploy/test/
+/jsonnet/vendor/
+/jsonnet/tmp/
