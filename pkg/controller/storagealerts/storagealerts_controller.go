@@ -3,14 +3,18 @@ package storagealerts
 import (
 	"context"
 
+	monv1 "github.com/coreos/prometheus-operator/pkg/apis/monitoring/v1"
+	monitoring "github.com/coreos/prometheus-operator/pkg/client/versioned"
 	alertsv1alpha1 "github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1"
-
+	manifests "github.com/monstorak/monstorak/pkg/manifests"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
@@ -103,6 +107,11 @@ func (r *ReconcileStorageAlerts) Reconcile(request reconcile.Request) (reconcile
 	// Define a new Pod object
 	pod := newPodForCR(instance)
 
+	f := manifests.NewFactory(instance.Namespace)
+	prometheusK8sRules, err := f.PrometheusK8sRules()
+	prometheusK8sRules.Namespace = instance.Spec.StorageAlert.PrometheusNamespace
+	CreateOrUpdatePrometheusRule(prometheusK8sRules)
+
 	// Set StorageAlerts instance as the owner and controller
 	if err := controllerutil.SetControllerReference(instance, pod, r.scheme); err != nil {
 		return reconcile.Result{}, err
@@ -149,5 +158,39 @@ func newPodForCR(cr *alertsv1alpha1.StorageAlerts) *corev1.Pod {
 				},
 			},
 		},
+	}
+}
+
+// CreateOrUpdatePrometheusRule Creates or Updates prometheusRule object
+func CreateOrUpdatePrometheusRule(p *monv1.PrometheusRule) {
+	reqLogger := log.WithValues("Prometheus Namespace: ", p.ObjectMeta.Namespace)
+	cfg, err := config.GetConfig()
+	mclient, err := monitoring.NewForConfig(cfg)
+	pclient := mclient.MonitoringV1().PrometheusRules(p.GetNamespace())
+	oldRule, err := pclient.Get(p.GetName(), metav1.GetOptions{})
+	if apierrors.IsNotFound(err) {
+		_, err := pclient.Create(p)
+		if err != nil {
+			reqLogger.Error(err, "creating PrometheusRule object failed", "Prometheus Namespace: ", p.ObjectMeta.Namespace)
+			return
+		} else {
+			reqLogger.Info("PrometheusRule Created.", "Prometheus Namespace: ", p.ObjectMeta.Namespace)
+			return
+		}
+	}
+	if err != nil {
+		reqLogger.Error(err, "retrieving PrometheusRule object failed", "Prometheus Namespace: ", p.ObjectMeta.Namespace)
+		return
+	}
+
+	p.ResourceVersion = oldRule.ResourceVersion
+
+	_, err = pclient.Update(p)
+	if err != nil {
+		reqLogger.Error(err, "updating PrometheusRule object failed", "Prometheus Namespace: ", p.ObjectMeta.Namespace)
+		return
+	} else {
+		reqLogger.Info("PrometheusRule Updated.", "Prometheus Namespace: ", p.ObjectMeta.Namespace)
+		return
 	}
 }

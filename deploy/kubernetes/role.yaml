@@ -3,6 +3,7 @@ kind: Role
 metadata:
   creationTimestamp: null
   name: monstorak
+  namespace: storage-monitoring
 rules:
 - apiGroups:
   - ""

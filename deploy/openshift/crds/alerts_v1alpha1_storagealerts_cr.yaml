@@ -1,0 +1,14 @@
+apiVersion: alerts.monstorak.org/v1alpha1
+kind: StorageAlerts
+metadata:
+  name: monstorak-storage-alerts
+  namespace: storage-monitoring
+spec:
+  size: 3
+  storageName: "ceph"
+  storageVersion: "v14"
+  storageAlert:
+    enabled: true
+    prometheusNamespace: "monitoring"
+  storageDashboard:
+    enabled: false
