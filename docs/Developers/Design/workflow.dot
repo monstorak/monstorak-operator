@@ -1,7 +1,11 @@
 # dot -Tpng -O <this_file>
 
 digraph {
+<<<<<<< HEAD
   label="Workflow of Monstorak in K8s/OCP"
+=======
+  label="Workflow of Monstorak in k8s/OCP"
+>>>>>>> Incorporated new design changes
   fontname="helvetica"
   nodesep=0.5
 
@@ -14,11 +18,19 @@ digraph {
     dir=forward
     fontname="helvetica"
   ]
+<<<<<<< HEAD
   
   pre [label="Prerequisites"]
   pre->c1
 
   c1 [label="Cluster: K8s/OCP"]
+=======
+
+  pre [label="Prerequisites"]
+  pre->c1
+
+  c1 [label="Cluster: k8s/OCP"]
+>>>>>>> Incorporated new design changes
   c1->p1, p2
   c1->s1, s2
 
@@ -27,7 +39,11 @@ digraph {
   p2->p1
 
   s1 [label="Storage Exists"]
+<<<<<<< HEAD
   s2 [label="Provision Storage"]  
+=======
+  s2 [label="Provision Storage"]
+>>>>>>> Incorporated new design changes
   s2->s1
 
   ps1 [label="Prometheus can reach Storage"]
@@ -41,11 +57,19 @@ digraph {
   controller1->cr1, cr2, cr3
   cr1 [label="StorageCatalog"]
   cr2 [label="StorageAlert"]
+<<<<<<< HEAD
   cr3 [label="StorageDashboard"]  
   cr1, cr2, cr3->controller2
   controller2 [label="Controller 2"]
   controller2->cr4
   cr4 [label="StorageMonitoringPlan(s)"]  
+=======
+  cr3 [label="StorageDashboard"]
+  cr1, cr2, cr3->controller2
+  controller2 [label="Controller 2"]
+  controller2->cr4
+  cr4 [label="StorageMonitoringPlan(s)"]
+>>>>>>> Incorporated new design changes
 
   controller2->deploy
   deploy [label="Deployment of StorageMonitoringPlan(s)"]

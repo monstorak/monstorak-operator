@@ -19,47 +19,98 @@ which contains configurations options like whether alerts are enabled, if
 dashboards are enabled, name of the storage system and version details of storage
 system.
 
-# Custom resources
+![Hierarchy of monstorak customer resources](crd_hierarchy.dot.png)
+
+# Custom Resources Definitions
 
 This section describes the fields in each of the custom resources.
 
-## StorageMixinClass CR
+## **StorageCatelog**
 
-The storage mixin class CR defines the mixins deployment specific configuration
-for a storage system. A commented example is shown below:
+### *Singular: StorageCatalog, Plural:StorageCatalogs*
 
-```yaml
+The StorageCatalog custom resoyrce defines a storage system for which mixins could
+be deployed using the operator. This CR captures the names of the storage system,
+its supported version details and flag whether only alerts, only dashboards or
+both need to be deployed.
+
+```YAML
 apiVersion: mixins.monstorak.org/v1alpha1
-kind: StorageMixinClass
-metadata:
-  name: example-storage-mixin-class
+kind: StorageCatalog
 spec:
-  # Add fields here
-  size: 3
-  storageName: "name-of-the-storage-system e.g. ceph"
-  storageVersion: "version-of-storage-system"
-  storageAlert:
-    enabled: true
-    prometheusNamespace: "namespace-in-which-cr-to-be-deployed"
-  storageDashboard:
-    enabled: false
-    grafanaNamespace: "namespace-in-which-grafana-should-be-deployed"
-status:
-  # TBD operator state (e.g. running, completed, pending etc)
-  ...
+  - storage: "ceph"
+    version: ["mimic", "nautilus"]
+    alert: true
+    dashboard: true
+```
+
+## **StorageAlert**
+
+### *Singular: StorageAlert, Plural: StorageAlerts*
+
+The StorageAlert custom resource defines the alerts configuration for a storage
+system. This basically captures details like for which version alerts are enabled,
+if alerts enabled then which namepsace alerting rules should be deployed and
+any specific lables to be used while deployment.
+
+```YAML
+apiVersion: mixins.monstorak.org/v1alpha1
+kind: StorageAlert
+spec:
+  - storage: "ceph"
+    - version: "mimic"
+      alert: false
+    - version: "nautilus"
+      alert: true
+      prometheus:
+      - namespace: "monitoring"
+      - lable: "prometheus:k8s"
+```
+
+## **StorageDashboard**
+
+### *Singular: StorageDashboard, Plural: StorageDashboards*
+
+The StorageDashboard customer resource defines the dashboards configuration for
+a storage system. This basically captures details like for which version
+dashboards are enabled, if dashboards enabled then which namepsace the
+dashboards should be deployed and any specific lables to be used while deployment.
+
+```YAML
+apiVersion: mixins.monstorak.org/v1alpha1
+kind: StorageDashboard
+spec:
+  - storage: "ceph"
+    - version: "mimic"
+      dashboard: false
+    - version: "nautilus"
+      dashboard: true
+      grafana:
+      - namespace: "monitoring"
+      - label: "grafana:k8s"
+```
+
+## **StorageMonitoringPlan**
+
+### *Singular: StorageMonitoringPlan, Plural: StorageMonitoringPlans*
+
+The StorageMonitoringPlan custom resource defines a plan which shoul be
+executed by operator controller to deploy the required mixins artifacts.
+
+```YAML
+apiVersion: mixins.monstorak.org/v1alpha1
+kind: StorageMonitoringPlan
+spec:
+  - storage: "ceph"
+  - version: "mimic"
+    - alert: false
+    - dashbaord: false
+  - version: "nautilus"
+    - alert: true
+    - dashboard: true
 ```
 
 All CRs live within the `mixins.monstorak.org` group and have version
 `v1alpha1`. The storage cluster and all its artifacts are suposed to be
 deployed in single namespace.  The `spec` field provides the main
 configuration options.
-
-The `storageAlert` section mentions if alerts are enabled for the said
-storage system and operator needs to deploy the same.
-
-The `storageDashboard` section mentions if grafan dashboard are enabled
-for the storage system and operator needs to deploy the same.
-
-The `storageName` field holds the name of the storage system e.g. ceph/gluster
-
-The `storageVersion` field holds the version details of the storage system.
