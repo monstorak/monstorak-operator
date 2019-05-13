@@ -7,6 +7,7 @@ rules:
 - apiGroups:
   - ""
   resources:
+  - namespaces
   - pods
   - services
   - endpoints
@@ -16,12 +17,6 @@ rules:
   - secrets
   verbs:
   - '*'
-- apiGroups:
-  - ""
-  resources:
-  - namespaces
-  verbs:
-  - get
 - apiGroups:
   - apps
   resources:
@@ -61,5 +56,17 @@ rules:
   - prometheuses/finalizers
   - prometheusrules
   - servicemonitors
+  verbs:
+  - '*'
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - '*'
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - '*'
   verbs:
   - '*'
