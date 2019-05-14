@@ -5,10 +5,10 @@ metadata:
 spec:
   group: alerts.monstorak.org
   names:
-    kind: StorageAlerts
-    listKind: StorageAlertsList
+    kind: StorageAlert
+    listKind: StorageAlertList
     plural: storagealerts
-    singular: storagealerts
+    singular: storagealert
   scope: Namespaced
   subresources:
     status: {}
@@ -25,25 +25,12 @@ spec:
           properties:
             storageAlert:
               properties:
-                enabled:
-                  type: boolean
                 labelSelector:
                   additionalProperties:
                     type: string
                   type: object
                 prometheusNamespace:
                   type: string
-              type: object
-            storageDashboard:
-              properties:
-                enabled:
-                  type: boolean
-                grafanaNamespace:
-                  type: string
-                labelSelector:
-                  additionalProperties:
-                    type: string
-                  type: object
               type: object
             storageName:
               type: string

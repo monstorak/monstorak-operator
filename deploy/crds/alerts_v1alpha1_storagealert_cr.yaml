@@ -1,0 +1,7 @@
+apiVersion: alerts.monstorak.org/v1alpha1
+kind: StorageAlert
+metadata:
+  name: example-storagealert
+spec:
+  # Add fields here
+  size: 3
