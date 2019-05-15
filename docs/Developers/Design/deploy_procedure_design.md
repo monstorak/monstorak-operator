@@ -1,65 +1,42 @@
 This document describes the actions that have to be executed successfully for
-monstorak's CRDs to be considered reconciled. They are implemented as
-`reconciler.Action` objects, and are enumerated in a `reconciler.Procedure`
-object. Procedure level actions are ones that modify state and should have a
-corresponding entry populated in
-`.Status.ReconcileActions map[string]reconciler.Result`.
-
-Top level actions are executed in an arbitrary order so they must define any
-prerequisite actions explicitly.
-
-An action may be a top-level action and still defined as a prerequisite and the
-caching implementation will ensure that it is executed a maximum of once per
-Procedure execution.
+monstorak's CRDs to be considered reconciled.
 
 ![ActionGraph](workflow.dot.png)
 
-# StorageMonitoringPlan actions
+# Pre-requisites
 
-## clusterMonitoringDeployed
+## Cluster monitoring deployed
+This operator expects that cluster monitoring stack is already deployed in
+k8s and all required services like prometheus and its related artifacts
+are already available.
 
-## storageClusterDeployed
+## Storage cluster deployed
+The ceph mixins (alerting rules) are meant for storage, so the operator expects
+the storage stack to be deployed and available already. The operator
+![Rook](https://github.com/rook/rook/) takes care of deployment of ceph cluster.
 
-## monitoringEnabledForStorage
+## Monitoring Enabled For Storage
+The namespace in which storage is deployed, monitoring needs to be enabled for
+the same already. Below commands can be used to enable the required configurations
 
-## deployStorageMixin
+```
+- oc label namespace <storage-namespoace> openshift.io/cluster-monitoring=true
+- oc policy add-role-to-user view system:serviceaccount:openshift-monitoring:prometheus-k8s -n <storage-namespace>
+```
+
+# Deploy storage mixin
+Mixins are mechanism to write alerting rules and grafana dashboard templates in
+kubernetes. The project ![ceph-mixins](https://github.com/ceph/ceph-mixins/)
+provides the alerting rules for ceph storage system. The mixins use a templating
+language called jsonnet for writting the alerting rules and grafana dashboard
+templates, which ultimately needs to be compiled into prometheus rules YAML and
+grafana dashboard JSON templates.
+
+This operator take care of deploying the prometheus alerting rules generated out
+of ![ceph-mixins](https://github.com/ceph/ceph-mixins/) in a kubernetes cluster.
 
 The monstorak operator consists of two controllers. The first one takes care of
-getting the instanciating/reconciating customer resources like StorageCatalog,
-StorageAlert and StorageDasboard. Once customer resources are available, the
+the instanciating/reconciling custom resources like StorageCatalog,
+StorageAlert and StorageDasboard. Once custom resources are available, the
 second controller forms storage monitoring plans and executes them one by one
 based on how many storage system and what artificats to be deployed.
-
-# Deploy Operator with mixins
-To deploy the operator simply deploy to your cluster. The set of steps to be followed
-for deployment of monstorak operator and related artifacts, follow the below steps
-
-## Create the namespace `storage-monitoring`
-```
-oc create -f deploy/kubernetes/01_namespace.yaml
-```
-
-## Create required cluster roles
-```
-oc create -f deploy/kubernetes/02_cluster-role.yaml
-```
-
-## Create cluster role binding
-```
-oc create -f deploy/kubernetes/03_cluster-rolebinding.yaml
-```
-
-## Deploy the operator
-```
-oc create -f deploy/kubernetes/04_operator.yaml
-```
-
-## Deploy the custom resources
-```
-oc create -f deploy/kubernets/05_storageAlerts.yaml
-```
-
-## Deploy the storage alert rules
-```
-oc create -f jsonnet/manifests/ceph-prometheus-rules.yaml
-```
