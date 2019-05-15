@@ -8,4 +8,4 @@ spec:
   storageType: "STORAGE_TYPE"
   storageVersion: "STORAGE_VERSION"
   storageAlert:
-    prometheusNamespace: "PROMETHEUS_NAMESPACE"
+    prometheusNamespace: "openshift-monitoring"
