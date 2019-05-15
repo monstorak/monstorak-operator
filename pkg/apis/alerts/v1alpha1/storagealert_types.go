@@ -28,7 +28,7 @@ type StorageAlertSpec struct {
 	// Add custom validation using kubebuilder tags: https://book.kubebuilder.io/beyond_basics/generating_crd.html
 
 	// StorageName provides the name of the storage type
-	StorageName string `json:"storageName,omitempty"`
+	StorageType string `json:"storageType,omitempty"`
 	// StorageVersion provides the current version of the storage type used
 	StorageVersion string       `json:"storageVersion,omitempty"`
 	StorageAlert   AlertDetails `json:"storageAlert,omitempty"`

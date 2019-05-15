@@ -68,7 +68,7 @@ func schema_pkg_apis_alerts_v1alpha1_StorageAlertSpec(ref common.ReferenceCallba
 			SchemaProps: spec.SchemaProps{
 				Description: "StorageAlertSpec defines the desired state of StorageAlert",
 				Properties: map[string]spec.Schema{
-					"storageName": {
+					"storageType": {
 						SchemaProps: spec.SchemaProps{
 							Description: "StorageName provides the name of the storage type",
 							Type:        []string{"string"},

@@ -50,5 +50,6 @@ rules:
   - alerts.monstorak.org
   resources:
   - '*'
+  - storagealerts
   verbs:
   - '*'

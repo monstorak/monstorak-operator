@@ -32,7 +32,7 @@ spec:
                 prometheusNamespace:
                   type: string
               type: object
-            storageName:
+            storageType:
               type: string
             storageVersion:
               type: string

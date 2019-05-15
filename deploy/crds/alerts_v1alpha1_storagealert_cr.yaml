@@ -5,3 +5,7 @@ metadata:
 spec:
   # Add fields here
   size: 3
+  storageType: "STORAGE_TYPE"
+  storageVersion: "STORAGE_VERSION"
+  storageAlert:
+    prometheusNamespace: "PROMETHEUS_NAMESPACE"
