@@ -47,15 +47,9 @@ rules:
   verbs:
   - update
 - apiGroups:
-  - alert.monstorak.org
-  resources:
-  - '*'
-  - storagealerts
-  verbs:
-  - '*'
-- apiGroups:
   - alerts.monstorak.org
   resources:
   - '*'
+  - storagealerts
   verbs:
   - '*'

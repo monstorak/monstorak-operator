@@ -1,0 +1,11 @@
+apiVersion: alerts.monstorak.org/v1alpha1
+kind: StorageAlert
+metadata:
+  name: example-storagealert
+spec:
+  # Add fields here
+  size: 3
+  storageType: "STORAGE_TYPE"
+  storageVersion: "STORAGE_VERSION"
+  storageAlert:
+    prometheusNamespace: "openshift-monitoring"

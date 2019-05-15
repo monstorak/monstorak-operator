@@ -13,17 +13,17 @@ import (
 
 func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenAPIDefinition {
 	return map[string]common.OpenAPIDefinition{
-		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlerts":       schema_pkg_apis_alerts_v1alpha1_StorageAlerts(ref),
-		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertsSpec":   schema_pkg_apis_alerts_v1alpha1_StorageAlertsSpec(ref),
-		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertsStatus": schema_pkg_apis_alerts_v1alpha1_StorageAlertsStatus(ref),
+		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlert":       schema_pkg_apis_alerts_v1alpha1_StorageAlert(ref),
+		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertSpec":   schema_pkg_apis_alerts_v1alpha1_StorageAlertSpec(ref),
+		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertStatus": schema_pkg_apis_alerts_v1alpha1_StorageAlertStatus(ref),
 	}
 }
 
-func schema_pkg_apis_alerts_v1alpha1_StorageAlerts(ref common.ReferenceCallback) common.OpenAPIDefinition {
+func schema_pkg_apis_alerts_v1alpha1_StorageAlert(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "StorageAlerts is the Schema for the storagealerts API",
+				Description: "StorageAlert is the Schema for the storagealerts API",
 				Properties: map[string]spec.Schema{
 					"kind": {
 						SchemaProps: spec.SchemaProps{
@@ -46,29 +46,29 @@ func schema_pkg_apis_alerts_v1alpha1_StorageAlerts(ref common.ReferenceCallback)
 					},
 					"spec": {
 						SchemaProps: spec.SchemaProps{
-							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertsSpec"),
+							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertSpec"),
 						},
 					},
 					"status": {
 						SchemaProps: spec.SchemaProps{
-							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertsStatus"),
+							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertStatus"),
 						},
 					},
 				},
 			},
 		},
 		Dependencies: []string{
-			"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertsSpec", "github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertsStatus", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
+			"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertSpec", "github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertStatus", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
 	}
 }
 
-func schema_pkg_apis_alerts_v1alpha1_StorageAlertsSpec(ref common.ReferenceCallback) common.OpenAPIDefinition {
+func schema_pkg_apis_alerts_v1alpha1_StorageAlertSpec(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "StorageAlertsSpec defines the desired state of StorageAlerts",
+				Description: "StorageAlertSpec defines the desired state of StorageAlert",
 				Properties: map[string]spec.Schema{
-					"storageName": {
+					"storageType": {
 						SchemaProps: spec.SchemaProps{
 							Description: "StorageName provides the name of the storage type",
 							Type:        []string{"string"},
@@ -87,24 +87,19 @@ func schema_pkg_apis_alerts_v1alpha1_StorageAlertsSpec(ref common.ReferenceCallb
 							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.AlertDetails"),
 						},
 					},
-					"storageDashboard": {
-						SchemaProps: spec.SchemaProps{
-							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.DashboardDetails"),
-						},
-					},
 				},
 			},
 		},
 		Dependencies: []string{
-			"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.AlertDetails", "github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.DashboardDetails"},
+			"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.AlertDetails"},
 	}
 }
 
-func schema_pkg_apis_alerts_v1alpha1_StorageAlertsStatus(ref common.ReferenceCallback) common.OpenAPIDefinition {
+func schema_pkg_apis_alerts_v1alpha1_StorageAlertStatus(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "StorageAlertsStatus defines the observed state of StorageAlerts",
+				Description: "StorageAlertStatus defines the observed state of StorageAlert",
 				Properties:  map[string]spec.Schema{},
 			},
 		},
