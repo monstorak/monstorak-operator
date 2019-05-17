@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	CephRules = "manifests/prometheus-rules.yaml"
+	CephRules = "jsonnet/manifests/ceph-prometheus-rules.yaml"
 )
 
 func MustAssetReader(asset string) io.Reader {

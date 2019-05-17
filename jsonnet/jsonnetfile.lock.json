@@ -8,7 +8,7 @@
                     "subdir": ""
                 }
             },
-            "version": "1798d5ee5cbbdc3f1e00f22ff0cb8d014e45fd00"
+            "version": "47fb18223f78971fb876c85f6b961320023f7df8"
         },
         {
             "name": "gluster-mixins",
@@ -28,7 +28,7 @@
                     "subdir": "grafonnet"
                 }
             },
-            "version": "d270f529db9eb750425a173188c534ab92532f47"
+            "version": "a6896d19aedc46ecf80dd64967191b9fd6f75f45"
         },
         {
             "name": "grafana-builder",
@@ -38,7 +38,7 @@
                     "subdir": "grafana-builder"
                 }
             },
-            "version": "2c635c3310c6e61720871ac94d6d2572e37b83f7"
+            "version": "a73d6c3e7f5804fc7a16f592b42a62384605046c"
         }
     ]
 }
