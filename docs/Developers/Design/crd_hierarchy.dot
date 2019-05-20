@@ -21,11 +21,9 @@ digraph {
 
   o1->c11, c12
 
-  cr1 [label="StorageCatalog"]
-  cr2 [label="StorageAlert"]
-  cr3 [label="StorageDashboard"]
-  cr4 [label="StorageMonitoringPlan"]
+  cr1 [label="StorageAlert"]
+  cr2 [label="StorageMonitoringPlan"]
 
-  c11->cr1, cr2, cr3
-  c12->cr4
+  c11->cr1
+  c12->cr2
 }

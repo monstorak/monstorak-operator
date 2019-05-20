@@ -1,7 +1,7 @@
 # dot -Tpng -O <this_file>
 
 digraph {
-  label="Workflow of Monstorak in K8s/OCP"
+  label="Workflow of Monstorak in k8s/OCP"
   fontname="helvetica"
   nodesep=0.5
 
@@ -14,11 +14,10 @@ digraph {
     dir=forward
     fontname="helvetica"
   ]
-  
   pre [label="Prerequisites"]
   pre->c1
 
-  c1 [label="Cluster: K8s/OCP"]
+  c1 [label="Cluster: k8s/OCP"]
   c1->p1, p2
   c1->s1, s2
 
@@ -27,7 +26,7 @@ digraph {
   p2->p1
 
   s1 [label="Storage Exists"]
-  s2 [label="Provision Storage"]  
+  s2 [label="Provision Storage"]
   s2->s1
 
   ps1 [label="Prometheus can reach Storage"]
@@ -38,14 +37,12 @@ digraph {
   op->controller1, controller2
 
   controller1 [label="Controller 1"]
-  controller1->cr1, cr2, cr3
-  cr1 [label="StorageCatalog"]
-  cr2 [label="StorageAlert"]
-  cr3 [label="StorageDashboard"]  
-  cr1, cr2, cr3->controller2
+  controller1->cr1
+  cr1 [label="StorageAlert"]
+  cr1->controller2
   controller2 [label="Controller 2"]
   controller2->cr4
-  cr4 [label="StorageMonitoringPlan(s)"]  
+  cr4 [label="StorageMonitoringPlan(s)"]
 
   controller2->deploy
   deploy [label="Deployment of StorageMonitoringPlan(s)"]
