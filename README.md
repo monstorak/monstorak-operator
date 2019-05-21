@@ -1,23 +1,25 @@
-# Monitoring operator for storages
+# Operator for storage monitoring mixin
 
 This operator takes care of deployment of mixins of storage system in
-kubernetes. The mixins are the mechanism for adding alerting rules,
-grafana dashboards and recording rules for prometheus in kubernetes.
+kubernetes. The mixins is an abstraction framework that makes it easier
+for developers to collaborate on common set of features like prometheus
+rules and grafana dashboards and it also increases the re-usability.
 
-# Deploy Operator with mixins
+# Deploy mixin with operator
 To deploy the operator simply deploy to your cluster. The set of steps
 to be followed for deployment of monstorak operator and related artifacts,
-follow the below steps. These steps involve creation of namespace, cluster
-role, role binding and deployment of operator, its custom resources and
+follow the below steps. The set of steps performed by operator involve
+creation of namespace, role, role binding, its custom resources and
 finally the storage alerting rules.
 
-```
-oc create -f deploy/kubernetes/01_namespace.yaml
-oc create -f deploy/kubernetes/02_cluster-role.yaml
-oc create -f deploy/kubernetes/03_cluster-rolebinding.yaml
-oc create -f deploy/kubernetes/04_operator.yaml
-oc create -f deploy/kubernetes/05_storageAlerts.yaml
-oc create -f jsonnet/manifests/ceph-prometheus-rules.yaml
-```
+Create a namespace where the operator would be deployed and then run the
+below commands -
 
-The above steps consider sample deployment of ceph alerting rules.
+```
+oc create -f deploy/crds/alerts_v1alpha1_storagealert_crd.yaml
+oc create -f deploy/serviceaccount.yaml
+oc create -f deploy/role.yaml
+oc create -f deploy/role_binding.yaml
+oc create -f deploy/operator.yaml
+oc create -f deploy/crds/alerts_v1alpha1_storagealert_cr.yaml
+```

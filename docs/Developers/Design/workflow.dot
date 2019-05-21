@@ -34,16 +34,9 @@ digraph {
   s1->ps1
 
   op [label="Operator Instance"]
-  op->controller1, controller2
+  op->controller1
 
   controller1 [label="Controller 1"]
   controller1->cr1
   cr1 [label="StorageAlert"]
-  cr1->controller2
-  controller2 [label="Controller 2"]
-  controller2->cr4
-  cr4 [label="StorageMonitoringPlan(s)"]
-
-  controller2->deploy
-  deploy [label="Deployment of StorageMonitoringPlan(s)"]
 }
