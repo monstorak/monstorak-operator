@@ -17,13 +17,9 @@ digraph {
 
   o1 [label="Instance: Operator"]
   c11 [label="Controller 1"]
-  c12 [label="Controller 2"]
 
-  o1->c11, c12
+  o1->c11
 
   cr1 [label="StorageAlert"]
-  cr2 [label="StorageMonitoringPlan"]
-
   c11->cr1
-  c12->cr2
 }
