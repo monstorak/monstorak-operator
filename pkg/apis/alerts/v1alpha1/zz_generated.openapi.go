@@ -103,6 +103,5 @@ func schema_pkg_apis_alerts_v1alpha1_StorageAlertStatus(ref common.ReferenceCall
 				Properties:  map[string]spec.Schema{},
 			},
 		},
-		Dependencies: []string{},
 	}
 }

@@ -12,7 +12,7 @@ GOJSONTOYAML_BIN=$(FIRST_GOPATH)/bin/gojsontoyaml
 GOBINDATA_BIN=$(FIRST_GOPATH)/bin/go-bindata
 BINDATA=pkg/manifests/bindata.go
 
-build: dependencies mixin $(BINDATA)
+build:  dependencies mixin $(BINDATA)
 	operator-sdk build $(REPO):$(TAG)
 
 push:

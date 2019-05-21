@@ -2,10 +2,25 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: monstorak
+  namespace: storage-monitoring
 subjects:
 - kind: ServiceAccount
   name: monstorak
+  namespace: storage-monitoring
 roleRef:
   kind: Role
   name: monstorak
   apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: monstorak
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: monstorak-cluster
+subjects:
+- kind: ServiceAccount
+  name: monstorak
+  namespace: storage-monitoring

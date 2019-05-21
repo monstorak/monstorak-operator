@@ -3,16 +3,19 @@ package storagealert
 import (
 	"context"
 
+	monv1 "github.com/coreos/prometheus-operator/pkg/apis/monitoring/v1"
+	monitoring "github.com/coreos/prometheus-operator/pkg/client/versioned"
 	alertsv1alpha1 "github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1"
-
-	corev1 "k8s.io/api/core/v1"
+	"github.com/monstorak/monstorak/pkg/common"
+	"github.com/monstorak/monstorak/pkg/manifests"
+	"github.com/monstorak/monstorak/pkg/prometheus"
 	"k8s.io/apimachinery/pkg/api/errors"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
-	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
@@ -53,14 +56,14 @@ func add(mgr manager.Manager, r reconcile.Reconciler) error {
 	}
 
 	// TODO(user): Modify this to be the types you create that are owned by the primary resource
-	// Watch for changes to secondary resource Pods and requeue the owner StorageAlert
-	err = c.Watch(&source.Kind{Type: &corev1.Pod{}}, &handler.EnqueueRequestForOwner{
-		IsController: true,
-		OwnerType:    &alertsv1alpha1.StorageAlert{},
-	})
-	if err != nil {
-		return err
-	}
+	// Watch for changes to secondary resource Pods and requeue the owner StorageAlerts
+	// err = c.Watch(&source.Kind{Type: &corev1.Pod{}}, &handler.EnqueueRequestForOwner{
+	// 	IsController: true,
+	// 	OwnerType:    &alertsv1alpha1.StorageAlerts{},
+	// })
+	// if err != nil {
+	// 	return err
+	// }
 
 	return nil
 }
@@ -75,10 +78,8 @@ type ReconcileStorageAlert struct {
 	scheme *runtime.Scheme
 }
 
-// Reconcile reads that state of the cluster for a StorageAlert object and makes changes based on the state read
-// and what is in the StorageAlert.Spec
-// TODO(user): Modify this Reconcile function to implement your Controller logic.  This example creates
-// a Pod as an example
+// Reconcile reads that state of the cluster for a StorageAlerts object and makes changes based on the state read
+// and what is in the StorageAlerts.Spec
 // Note:
 // The Controller will requeue the Request to be processed again if the returned error is non-nil or
 // Result.Requeue is true, otherwise upon completion it will remove the work from the queue.
@@ -100,54 +101,70 @@ func (r *ReconcileStorageAlert) Reconcile(request reconcile.Request) (reconcile.
 		return reconcile.Result{}, err
 	}
 
-	// Define a new Pod object
-	pod := newPodForCR(instance)
+	f := manifests.NewFactory(instance.Namespace)
+	prometheusK8sRules, err := f.PrometheusK8sRules()
+	prometheusK8sRules.Namespace = instance.Spec.StorageAlert.PrometheusNamespace
 
-	// Set StorageAlert instance as the owner and controller
-	if err := controllerutil.SetControllerReference(instance, pod, r.scheme); err != nil {
-		return reconcile.Result{}, err
+	// Set StorageAlerts instance as the owner and controller
+	// if err := controllerutil.SetControllerReference(instance, prometheusK8sRules, r.scheme); err != nil {
+	// 	return reconcile.Result{}, err
+	// }
+
+	CreateOrUpdatePrometheusRule(prometheusK8sRules)
+
+	common.CreateOrUpdateRBAC()
+	err = common.CreateOrUpdateRBAC()
+	if err == nil {
+		reqLogger.Info("Created/Updated RBAC")
 	}
 
-	// Check if this Pod already exists
-	found := &corev1.Pod{}
-	err = r.client.Get(context.TODO(), types.NamespacedName{Name: pod.Name, Namespace: pod.Namespace}, found)
-	if err != nil && errors.IsNotFound(err) {
-		reqLogger.Info("Creating a new Pod", "Pod.Namespace", pod.Namespace, "Pod.Name", pod.Name)
-		err = r.client.Create(context.TODO(), pod)
-		if err != nil {
-			return reconcile.Result{}, err
-		}
-
-		// Pod created successfully - don't requeue
-		return reconcile.Result{}, nil
-	} else if err != nil {
-		return reconcile.Result{}, err
+	nsLabel := make(map[string]string)
+	nsLabel["openshift.io/cluster-monitoring"] = "true"
+	err = common.AddLabelToNamespace("openshift-storage", nsLabel)
+	if err == nil {
+		reqLogger.Info("Added label to Namespace", "Namepace :", "openshift-storage")
 	}
 
-	// Pod already exists - don't requeue
-	reqLogger.Info("Skip reconcile: Pod already exists", "Pod.Namespace", found.Namespace, "Pod.Name", found.Name)
+	svcMonitorLabel := make(map[string]string)
+	svcMonitorLabel["app"] = "rook-ceph-mgr"
+	svcMonitorLabel["rook_cluster"] = "openshift-storage"
+	err = prometheus.CreateOrUpdateServiceMonitors("rook-ceph-mgr", "http-metrics", "openshift-storage", svcMonitorLabel)
+	if err == nil {
+		reqLogger.Info("Created/Updated ServiceMonitor", "ServiceMonitor :", "rook-ceph-mgr")
+	}
+
 	return reconcile.Result{}, nil
 }
 
-// newPodForCR returns a busybox pod with the same name/namespace as the cr
-func newPodForCR(cr *alertsv1alpha1.StorageAlert) *corev1.Pod {
-	labels := map[string]string{
-		"app": cr.Name,
+// CreateOrUpdatePrometheusRule Creates or Updates prometheusRule object
+func CreateOrUpdatePrometheusRule(p *monv1.PrometheusRule) {
+	reqLogger := log.WithValues("Prometheus Namespace: ", p.ObjectMeta.Namespace)
+	cfg, err := config.GetConfig()
+	mclient, err := monitoring.NewForConfig(cfg)
+	pclient := mclient.MonitoringV1().PrometheusRules(p.GetNamespace())
+	oldRule, err := pclient.Get(p.GetName(), metav1.GetOptions{})
+	if apierrors.IsNotFound(err) {
+		_, err := pclient.Create(p)
+		if err != nil {
+			reqLogger.Error(err, "creating PrometheusRule object failed", "Prometheus Namespace: ", p.ObjectMeta.Namespace)
+			return
+		}
+		reqLogger.Info("PrometheusRule Created.", "Prometheus Namespace: ", p.ObjectMeta.Namespace)
+		return
 	}
-	return &corev1.Pod{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      cr.Name + "-pod",
-			Namespace: cr.Namespace,
-			Labels:    labels,
-		},
-		Spec: corev1.PodSpec{
-			Containers: []corev1.Container{
-				{
-					Name:    "busybox",
-					Image:   "busybox",
-					Command: []string{"sleep", "3600"},
-				},
-			},
-		},
+	if err != nil {
+		reqLogger.Error(err, "retrieving PrometheusRule object failed", "Prometheus Namespace: ", p.ObjectMeta.Namespace)
+		return
+	}
+
+	p.ResourceVersion = oldRule.ResourceVersion
+
+	_, err = pclient.Update(p)
+	if err != nil {
+		reqLogger.Error(err, "updating PrometheusRule object failed", "Prometheus Namespace: ", p.ObjectMeta.Namespace)
+		return
+	} else {
+		reqLogger.Info("PrometheusRule Updated.", "Prometheus Namespace: ", p.ObjectMeta.Namespace)
+		return
 	}
 }
