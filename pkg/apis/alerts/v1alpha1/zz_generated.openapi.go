@@ -68,30 +68,28 @@ func schema_pkg_apis_alerts_v1alpha1_StorageAlertSpec(ref common.ReferenceCallba
 			SchemaProps: spec.SchemaProps{
 				Description: "StorageAlertSpec defines the desired state of StorageAlert",
 				Properties: map[string]spec.Schema{
-					"storageType": {
+					"storage": {
 						SchemaProps: spec.SchemaProps{
-							Description: "StorageName provides the name of the storage type",
-							Type:        []string{"string"},
-							Format:      "",
+							Type: []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageSpec"),
+									},
+								},
+							},
 						},
 					},
-					"storageVersion": {
+					"prometheus": {
 						SchemaProps: spec.SchemaProps{
-							Description: "StorageVersion provides the current version of the storage type used",
-							Type:        []string{"string"},
-							Format:      "",
-						},
-					},
-					"storageAlert": {
-						SchemaProps: spec.SchemaProps{
-							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.AlertDetails"),
+							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.PrometheusSpec"),
 						},
 					},
 				},
 			},
 		},
 		Dependencies: []string{
-			"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.AlertDetails"},
+			"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.PrometheusSpec", "github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageSpec"},
 	}
 }
 
@@ -103,5 +101,6 @@ func schema_pkg_apis_alerts_v1alpha1_StorageAlertStatus(ref common.ReferenceCall
 				Properties:  map[string]spec.Schema{},
 			},
 		},
+		Dependencies: []string{},
 	}
 }
