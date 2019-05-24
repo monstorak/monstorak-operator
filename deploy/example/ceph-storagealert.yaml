@@ -11,4 +11,4 @@ spec:
     serviceMonitor: "rook-ceph-mgr"
   prometheus:
     namespace: "openshift-monitoring"
-    label: "prometheus:k8s"
+    label: {"prometheus":"k8s"}

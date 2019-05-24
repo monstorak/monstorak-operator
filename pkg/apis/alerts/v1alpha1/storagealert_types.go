@@ -4,17 +4,17 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
-// PrometheusSpec defines the prometheus to be used
+// PrometheusSpec defines the Prometheus Instance to be used
+// for monitoring
 // +k8s:openapi-gen=true
 type PrometheusSpec struct {
 	Label     map[string]string `json:"label,omitempty"`
 	Namespace string            `json:"namespace,omitempty"`
 }
 
-// StorageSpec defines the storages to be monitored
+// StorageSpec defines the Storages to be monitored
 // +k8s:openapi-gen=true
 type StorageSpec struct {
 	Provider       string `json:"provider,omitempty"`

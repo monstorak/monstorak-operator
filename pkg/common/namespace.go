@@ -1,6 +1,8 @@
 package common
 
 import (
+	"fmt"
+
 	apiV1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	v1 "k8s.io/client-go/kubernetes/typed/core/v1"
@@ -10,6 +12,13 @@ import (
 
 var nsLog = logf.Log.WithName("common_namespace")
 
+const (
+	NamespaceNotFound      string = "Namespace not found"
+	NamespaceUpdateFailed  string = "Namespace could not be updated"
+	NamespaceMissingLabels string = "Namespace is missing labels"
+	NamespaceLabelFailed   string = "Namespace could not be labelled"
+)
+
 func newCoreV1Client() (*v1.CoreV1Client, error) {
 	client, err := clientcmd.BuildConfigFromFlags("", "")
 	if err != nil {
@@ -18,7 +27,8 @@ func newCoreV1Client() (*v1.CoreV1Client, error) {
 	return v1.NewForConfig(client)
 }
 
-func getNamespace(namespace string) (*apiV1.Namespace, error) {
+func GetNamespace(namespace string) (*apiV1.Namespace, error) {
+	nsLog.WithValues("Namespace", namespace)
 	coreClient, err := newCoreV1Client()
 	if err != nil {
 		return nil, err
@@ -35,37 +45,54 @@ func getNamespace(namespace string) (*apiV1.Namespace, error) {
 
 	ns, err := namespaceClient.Get(namespace, getOptions)
 	if err != nil {
-		nsLog.Error(err, "Could not find the namespace", "namespace : ", namespace)
-		return nil, err
+		nsLog.Error(err, NamespaceNotFound)
 	}
 	return ns, err
 }
 
-func updateNamespace(ns *apiV1.Namespace) error {
+func UpdateNamespace(namespace *apiV1.Namespace) (*apiV1.Namespace, error) {
+	nsLog.WithValues("Namespace", namespace.GetName())
 	coreClient, err := newCoreV1Client()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	namespaceClient := coreClient.Namespaces()
-	_, err = namespaceClient.Update(ns)
+	ns, err := namespaceClient.Update(namespace)
 	if err != nil {
-		nsLog.Error(err, "Namespace could not be updated", "Namespace :", ns)
+		nsLog.Error(err, NamespaceUpdateFailed)
+	}
+	return ns, err
+}
+
+func NamespaceHasLabels(namespace string, labels map[string]string) error {
+	nsLog.WithValues("Namespace", namespace)
+	ns, err := GetNamespace(namespace)
+	if err != nil {
 		return err
 	}
-	return err
+	nsLabels := ns.GetLabels()
+	for k, v := range labels {
+		if nsLabels[k] != v {
+			err = fmt.Errorf("No matching label found for %s=%s", k, v)
+			nsLog.Error(err, NamespaceMissingLabels)
+			return err
+		}
+	}
+	return nil
 }
 
 func AddLabelToNamespace(namespace string, label map[string]string) error {
-	ns, err := getNamespace(namespace)
+	nsLog.WithValues("Namespace", namespace, "Label", label)
+	ns, err := GetNamespace(namespace)
 	if err != nil {
-		nsLog.Error(err, "Could not add label to namespace. Check if namespace exists.", "namespace : ", namespace, "label :", label)
+		nsLog.Error(err, NamespaceLabelFailed)
 		return err
 	}
 	ns.ObjectMeta.SetLabels(label)
-	err = updateNamespace(ns)
+	_, err = UpdateNamespace(ns)
 	if err != nil {
-		nsLog.Error(err, "Could not add label to namespace", "namespace : ", namespace, "label :", label)
+		nsLog.Error(err, NamespaceLabelFailed)
 		return err
 	}
 	return err

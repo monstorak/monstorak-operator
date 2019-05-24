@@ -9,10 +9,10 @@ spec:
     version: "v14.2.1"
     namespace: "openshift-storage"
     serviceMonitor: "rook-ceph-mgr"
-  - provider: "nooba"
+  - provider: "noobaa"
     version: "v1.0"
     namespace: "openshift-storage"
-    serviceMonitor: "nooba-mgr"
+    serviceMonitor: "noobaa-mgr"
   prometheus:
     namespace: "openshift-monitoring"
-    label: "prometheus:k8s"
+    label: {"prometheus":"k8s"}

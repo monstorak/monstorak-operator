@@ -2,19 +2,16 @@ package storagealert
 
 import (
 	"context"
+	"time"
 
-	monv1 "github.com/coreos/prometheus-operator/pkg/apis/monitoring/v1"
-	monitoring "github.com/coreos/prometheus-operator/pkg/client/versioned"
+	corev1 "k8s.io/api/core/v1"
+
+	"github.com/monstorak/monstorak/pkg/tasks"
+
 	alertsv1alpha1 "github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1"
-	"github.com/monstorak/monstorak/pkg/common"
-	"github.com/monstorak/monstorak/pkg/manifests"
-	"github.com/monstorak/monstorak/pkg/prometheus"
-	"k8s.io/apimachinery/pkg/api/errors"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -24,11 +21,6 @@ import (
 )
 
 var log = logf.Log.WithName("controller_storagealert")
-
-/**
-* USER ACTION REQUIRED: This is a scaffold file intended for the user to modify with their own Controller
-* business logic.  Delete these comments after modifying this file.*
- */
 
 // Add creates a new StorageAlert Controller and adds it to the Manager. The Manager will set fields on the Controller
 // and Start it when the Manager is Started.
@@ -55,15 +47,14 @@ func add(mgr manager.Manager, r reconcile.Reconciler) error {
 		return err
 	}
 
-	// TODO(user): Modify this to be the types you create that are owned by the primary resource
-	// Watch for changes to secondary resource Pods and requeue the owner StorageAlerts
-	// err = c.Watch(&source.Kind{Type: &corev1.Pod{}}, &handler.EnqueueRequestForOwner{
-	// 	IsController: true,
-	// 	OwnerType:    &alertsv1alpha1.StorageAlerts{},
-	// })
-	// if err != nil {
-	// 	return err
-	// }
+	// Watch for changes to secondary resources and requeue the owner StorageAlerts
+	err = c.Watch(&source.Kind{Type: &corev1.Namespace{}}, &handler.EnqueueRequestForOwner{
+		IsController: true,
+		OwnerType:    &corev1.Namespace{},
+	})
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -83,15 +74,26 @@ type ReconcileStorageAlert struct {
 // Note:
 // The Controller will requeue the Request to be processed again if the returned error is non-nil or
 // Result.Requeue is true, otherwise upon completion it will remove the work from the queue.
+var (
+	reconcilePeriod = 10 * time.Second
+	reconcileResult = reconcile.Result{RequeueAfter: reconcilePeriod}
+)
+
+const (
+	FailedPrerequisites              string = "Some prerequisites are not met"
+	FailedRetrievePrometheusRule     string = "Failed to retrieve Prometheus Rules"
+	FailedCreateUpdatePrometheusRule string = "Failed to create/update Prometheus Rules"
+)
+
 func (r *ReconcileStorageAlert) Reconcile(request reconcile.Request) (reconcile.Result, error) {
 	reqLogger := log.WithValues("Request.Namespace", request.Namespace, "Request.Name", request.Name)
-	reqLogger.Info("Reconciling StorageAlert")
+	reqLogger.Info("Reconciling StorageAlerts")
 
 	// Fetch the StorageAlert instance
 	instance := &alertsv1alpha1.StorageAlert{}
 	err := r.client.Get(context.TODO(), request.NamespacedName, instance)
 	if err != nil {
-		if errors.IsNotFound(err) {
+		if apierrors.IsNotFound(err) {
 			// Request object not found, could have been deleted after reconcile request.
 			// Owned objects are automatically garbage collected. For additional cleanup logic use finalizers.
 			// Return and don't requeue
@@ -101,70 +103,36 @@ func (r *ReconcileStorageAlert) Reconcile(request reconcile.Request) (reconcile.
 		return reconcile.Result{}, err
 	}
 
-	f := manifests.NewFactory(instance.Namespace)
-	prometheusK8sRules, err := f.PrometheusK8sRules()
-	prometheusK8sRules.Namespace = instance.Spec.StorageAlert.PrometheusNamespace
-
-	// Set StorageAlerts instance as the owner and controller
-	// if err := controllerutil.SetControllerReference(instance, prometheusK8sRules, r.scheme); err != nil {
-	// 	return reconcile.Result{}, err
-	// }
-
-	CreateOrUpdatePrometheusRule(prometheusK8sRules)
-
-	common.CreateOrUpdateRBAC()
-	err = common.CreateOrUpdateRBAC()
-	if err == nil {
-		reqLogger.Info("Created/Updated RBAC")
-	}
-
-	nsLabel := make(map[string]string)
-	nsLabel["openshift.io/cluster-monitoring"] = "true"
-	err = common.AddLabelToNamespace("openshift-storage", nsLabel)
-	if err == nil {
-		reqLogger.Info("Added label to Namespace", "Namepace :", "openshift-storage")
-	}
-
-	svcMonitorLabel := make(map[string]string)
-	svcMonitorLabel["app"] = "rook-ceph-mgr"
-	svcMonitorLabel["rook_cluster"] = "openshift-storage"
-	err = prometheus.CreateOrUpdateServiceMonitors("rook-ceph-mgr", "http-metrics", "openshift-storage", svcMonitorLabel)
-	if err == nil {
-		reqLogger.Info("Created/Updated ServiceMonitor", "ServiceMonitor :", "rook-ceph-mgr")
+	for index, storageSpec := range instance.Spec.Storage {
+		storageNamespace := storageSpec.Namespace
+		serviceMonitor := storageSpec.ServiceMonitor
+		storageProvider := storageSpec.Provider
+		storageVersion := storageSpec.Version
+		reqLogger.WithValues("Storage Provider", storageProvider, "Storage Namespace", storageNamespace,
+			"Storage Version", storageVersion, "Service Monitor", serviceMonitor)
+		reqLogger.Info("Reconciling StorageAlert", "Index", index)
+		// Check prerequisites
+		err = tasks.Prerequisites(storageNamespace, serviceMonitor)
+		if err != nil {
+			// Prerequisites not met, requeue
+			reqLogger.Error(err, FailedPrerequisites)
+			return reconcileResult, err
+		}
+		// Get prometheusRule
+		prometheusRule, err := tasks.GetPrometheusRule(storageNamespace, storageProvider, storageVersion)
+		if err != nil {
+			// Failed to retrieve prometheusRule, requeue
+			reqLogger.Error(err, FailedRetrievePrometheusRule)
+			return reconcileResult, err
+		}
+		// Deploy prometheusRule
+		err = tasks.DeployPrometheusRule(storageNamespace, prometheusRule)
+		if err != nil {
+			// Failed to create/update prometheusRule, requeue
+			reqLogger.Error(err, FailedCreateUpdatePrometheusRule)
+			return reconcileResult, err
+		}
 	}
 
 	return reconcile.Result{}, nil
-}
-
-// CreateOrUpdatePrometheusRule Creates or Updates prometheusRule object
-func CreateOrUpdatePrometheusRule(p *monv1.PrometheusRule) {
-	reqLogger := log.WithValues("Prometheus Namespace: ", p.ObjectMeta.Namespace)
-	cfg, err := config.GetConfig()
-	mclient, err := monitoring.NewForConfig(cfg)
-	pclient := mclient.MonitoringV1().PrometheusRules(p.GetNamespace())
-	oldRule, err := pclient.Get(p.GetName(), metav1.GetOptions{})
-	if apierrors.IsNotFound(err) {
-		_, err := pclient.Create(p)
-		if err != nil {
-			reqLogger.Error(err, "creating PrometheusRule object failed", "Prometheus Namespace: ", p.ObjectMeta.Namespace)
-			return
-		}
-		reqLogger.Info("PrometheusRule Created.", "Prometheus Namespace: ", p.ObjectMeta.Namespace)
-		return
-	}
-	if err != nil {
-		reqLogger.Error(err, "retrieving PrometheusRule object failed", "Prometheus Namespace: ", p.ObjectMeta.Namespace)
-		return
-	}
-
-	p.ResourceVersion = oldRule.ResourceVersion
-
-	_, err = pclient.Update(p)
-	if err != nil {
-		reqLogger.Error(err, "updating PrometheusRule object failed", "Prometheus Namespace: ", p.ObjectMeta.Namespace)
-		return
-	} else {
-		reqLogger.Info("PrometheusRule Updated.", "Prometheus Namespace: ", p.ObjectMeta.Namespace)
-		return
-	}
 }

@@ -1,0 +1,8 @@
+{
+    "ceph":{
+        "v14.2.1": "jsonnet/manifests/ceph-prometheus-rules.yaml"
+    },
+    "noobaa":{
+        "v1.0": "jsonnet/manifests/noobaa-prometheus-rules.yaml"
+    }
+}
