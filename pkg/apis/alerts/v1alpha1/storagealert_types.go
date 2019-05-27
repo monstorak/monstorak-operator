@@ -1,45 +1,35 @@
 package v1alpha1
 
 import (
-	"fmt"
-
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
-// AlertDetails defines the alert related details
-type AlertDetails struct {
-	LabelSelector       map[string]string `json:"labelSelector,omitempty"`
-	PrometheusNamespace string            `json:"prometheusNamespace,omitempty"`
+// PrometheusSpec defines the prometheus to be used
+type PrometheusSpec struct {
+	Label     map[string]string `json:"label,omitempty"`
+	Namespace string            `json:"namespace,omitempty"`
 }
 
-func (a AlertDetails) String() string {
-	return fmt.Sprintf("LabelSelector: %+v  | PrometheusNamespace: %s",
-		a.LabelSelector, a.PrometheusNamespace)
+// StorageSpec defines the storages to be monitored
+type StorageSpec struct {
+	Provider  string   `json:"provider,omitempty"`
+	Version   []string `json:"version,omitempty"`
+	Namespace string   `json:"namespace,omitempty"`
 }
 
 // StorageAlertSpec defines the desired state of StorageAlert
 // +k8s:openapi-gen=true
 type StorageAlertSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "operator-sdk generate k8s" to regenerate code after modifying this file
-	// Add custom validation using kubebuilder tags: https://book.kubebuilder.io/beyond_basics/generating_crd.html
-
-	// StorageName provides the name of the storage type
-	StorageType string `json:"storageType,omitempty"`
-	// StorageVersion provides the current version of the storage type used
-	StorageVersion string       `json:"storageVersion,omitempty"`
-	StorageAlert   AlertDetails `json:"storageAlert,omitempty"`
+	Storage    []StorageSpec  `json:"storage,omitempty"`
+	Prometheus PrometheusSpec `json:"prometheus,omitempty"`
 }
 
 // StorageAlertStatus defines the observed state of StorageAlert
 // +k8s:openapi-gen=true
 type StorageAlertStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "operator-sdk generate k8s" to regenerate code after modifying this file
-	// Add custom validation using kubebuilder tags: https://book.kubebuilder.io/beyond_basics/generating_crd.html
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

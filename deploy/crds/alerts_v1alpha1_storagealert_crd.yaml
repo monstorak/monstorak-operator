@@ -23,19 +23,28 @@ spec:
           type: object
         spec:
           properties:
-            storageAlert:
+            prometheus:
               properties:
-                labelSelector:
+                label:
                   additionalProperties:
                     type: string
                   type: object
-                prometheusNamespace:
+                namespace:
                   type: string
               type: object
-            storageType:
-              type: string
-            storageVersion:
-              type: string
+            storage:
+              items:
+                properties:
+                  namespace:
+                    type: string
+                  provider:
+                    type: string
+                  version:
+                    items:
+                      type: string
+                    type: array
+                type: object
+              type: array
           type: object
         status:
           type: object

@@ -1,11 +1,48 @@
 apiVersion: alerts.monstorak.org/v1alpha1
 kind: StorageAlert
 metadata:
+  name: ceph-storagealert
+  namespace: storage-monitoring
+spec:
+  storage:
+  - provider: "ceph"
+    version:
+    - "v14.2.1-20190430"
+    namespace: "openshift-storage"
+  prometheus:
+    namespace: "openshift-monitoring"
+    label: "prometheus:k8s"
+---
+apiVersion: alerts.monstorak.org/v1alpha1
+kind: StorageAlert
+metadata:
+  name: nooba-storagealert
+  namespace: storage-monitoring
+spec:
+  storage:
+  - provider: "nooba"
+    version:
+    - "v1.0"
+    namespace: "openshift-storage"
+  prometheus:
+    namespace: "openshift-monitoring"
+    label: "prometheus:k8s"
+---
+apiVersion: alerts.monstorak.org/v1alpha1
+kind: StorageAlert
+metadata:
   name: monstorak-storagealert
   namespace: storage-monitoring
 spec:
-  size: 1
-  storageType: "ceph"
-  storageVersion: "v14"
-  storageAlert:
-    prometheusNamespace: "openshift-monitoring"
+  storage:
+  - provider: "ceph"
+    version:
+    - "v14.2.1-20190430"
+    namespace: "openshift-storage"
+  - provider: "nooba"
+    version:
+    - "v1.0"
+    namespace: "openshift-storage"
+  prometheus:
+    namespace: "openshift-monitoring"
+    label: "prometheus:k8s"
