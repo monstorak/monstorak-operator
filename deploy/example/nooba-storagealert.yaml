@@ -1,0 +1,14 @@
+apiVersion: alerts.monstorak.org/v1alpha1
+kind: StorageAlert
+metadata:
+  name: nooba-storagealert
+  namespace: storage-monitoring
+spec:
+  storage:
+  - provider: "nooba"
+    version: "v1.0"
+    namespace: "openshift-storage"
+    serviceMonitor: "nooba-mgr"
+  prometheus:
+    namespace: "openshift-monitoring"
+    label: "prometheus:k8s"
