@@ -39,10 +39,10 @@ spec:
                     type: string
                   provider:
                     type: string
+                  serviceMonitor:
+                    type: string
                   version:
-                    items:
-                      type: string
-                    type: array
+                    type: string
                 type: object
               type: array
           type: object
