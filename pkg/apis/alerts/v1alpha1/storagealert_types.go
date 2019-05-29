@@ -8,16 +8,19 @@ import (
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // PrometheusSpec defines the prometheus to be used
+// +k8s:openapi-gen=true
 type PrometheusSpec struct {
 	Label     map[string]string `json:"label,omitempty"`
 	Namespace string            `json:"namespace,omitempty"`
 }
 
 // StorageSpec defines the storages to be monitored
+// +k8s:openapi-gen=true
 type StorageSpec struct {
-	Provider  string   `json:"provider,omitempty"`
-	Version   []string `json:"version,omitempty"`
-	Namespace string   `json:"namespace,omitempty"`
+	Provider       string `json:"provider,omitempty"`
+	Version        string `json:"version,omitempty"`
+	Namespace      string `json:"namespace,omitempty"`
+	ServiceMonitor string `json:"serviceMonitor,omitempty"`
 }
 
 // StorageAlertSpec defines the desired state of StorageAlert

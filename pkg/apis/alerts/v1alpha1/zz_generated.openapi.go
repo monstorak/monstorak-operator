@@ -13,9 +13,43 @@ import (
 
 func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenAPIDefinition {
 	return map[string]common.OpenAPIDefinition{
+		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.PrometheusSpec":     schema_pkg_apis_alerts_v1alpha1_PrometheusSpec(ref),
 		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlert":       schema_pkg_apis_alerts_v1alpha1_StorageAlert(ref),
 		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertSpec":   schema_pkg_apis_alerts_v1alpha1_StorageAlertSpec(ref),
 		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertStatus": schema_pkg_apis_alerts_v1alpha1_StorageAlertStatus(ref),
+		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageSpec":        schema_pkg_apis_alerts_v1alpha1_StorageSpec(ref),
+	}
+}
+
+func schema_pkg_apis_alerts_v1alpha1_PrometheusSpec(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "PrometheusSpec defines the prometheus to be used",
+				Properties: map[string]spec.Schema{
+					"label": {
+						SchemaProps: spec.SchemaProps{
+							Type: []string{"object"},
+							AdditionalProperties: &spec.SchemaOrBool{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+					"namespace": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{},
 	}
 }
 
@@ -99,6 +133,43 @@ func schema_pkg_apis_alerts_v1alpha1_StorageAlertStatus(ref common.ReferenceCall
 			SchemaProps: spec.SchemaProps{
 				Description: "StorageAlertStatus defines the observed state of StorageAlert",
 				Properties:  map[string]spec.Schema{},
+			},
+		},
+		Dependencies: []string{},
+	}
+}
+
+func schema_pkg_apis_alerts_v1alpha1_StorageSpec(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "StorageSpec defines the storages to be monitored",
+				Properties: map[string]spec.Schema{
+					"provider": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
+					"version": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
+					"namespace": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
+					"serviceMonitor": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
+				},
 			},
 		},
 		Dependencies: []string{},

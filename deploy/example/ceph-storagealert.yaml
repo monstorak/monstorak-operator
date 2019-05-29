@@ -1,0 +1,14 @@
+apiVersion: alerts.monstorak.org/v1alpha1
+kind: StorageAlert
+metadata:
+  name: ceph-storagealert
+  namespace: storage-monitoring
+spec:
+  storage:
+  - provider: "ceph"
+    version: "v14.2.1"
+    namespace: "openshift-storage"
+    serviceMonitor: "rook-ceph-mgr"
+  prometheus:
+    namespace: "openshift-monitoring"
+    label: "prometheus:k8s"
