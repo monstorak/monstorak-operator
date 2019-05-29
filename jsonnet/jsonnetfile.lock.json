@@ -8,7 +8,17 @@
                     "subdir": ""
                 }
             },
-            "version": "47fb18223f78971fb876c85f6b961320023f7df8"
+            "version": "92eac24464e16c388c4486d4abc9143ab33f6c7a"
+        },
+        {
+            "name": "noobaa-mixins",
+            "source": {
+                "git": {
+                    "remote": "https://github.com/noobaa/noobaa-mixins",
+                    "subdir": ""
+                }
+            },
+            "version": "51e2dd529269f1be0b327e20b80559a8ecfb7559"
         },
         {
             "name": "gluster-mixins",
