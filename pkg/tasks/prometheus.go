@@ -2,8 +2,8 @@ package tasks
 
 import (
 	monv1 "github.com/coreos/prometheus-operator/pkg/apis/monitoring/v1"
-	"github.com/monstorak/monstorak/pkg/manifests"
-	"github.com/monstorak/monstorak/pkg/prometheus"
+	"github.com/monstorak/monstorak-operator/pkg/manifests"
+	"github.com/monstorak/monstorak-operator/pkg/prometheus"
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 )
 

@@ -1,8 +1,8 @@
 package tasks
 
 import (
-	"github.com/monstorak/monstorak/pkg/common"
-	"github.com/monstorak/monstorak/pkg/prometheus"
+	"github.com/monstorak/monstorak-operator/pkg/common"
+	"github.com/monstorak/monstorak-operator/pkg/prometheus"
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 )
 
