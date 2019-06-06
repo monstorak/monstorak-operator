@@ -13,11 +13,11 @@ import (
 
 func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenAPIDefinition {
 	return map[string]common.OpenAPIDefinition{
-		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.PrometheusSpec":     schema_pkg_apis_alerts_v1alpha1_PrometheusSpec(ref),
-		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlert":       schema_pkg_apis_alerts_v1alpha1_StorageAlert(ref),
-		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertSpec":   schema_pkg_apis_alerts_v1alpha1_StorageAlertSpec(ref),
-		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertStatus": schema_pkg_apis_alerts_v1alpha1_StorageAlertStatus(ref),
-		"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageSpec":        schema_pkg_apis_alerts_v1alpha1_StorageSpec(ref),
+		"github.com/monstorak/monstorak-operator/pkg/apis/alerts/v1alpha1.PrometheusSpec":     schema_pkg_apis_alerts_v1alpha1_PrometheusSpec(ref),
+		"github.com/monstorak/monstorak-operator/pkg/apis/alerts/v1alpha1.StorageAlert":       schema_pkg_apis_alerts_v1alpha1_StorageAlert(ref),
+		"github.com/monstorak/monstorak-operator/pkg/apis/alerts/v1alpha1.StorageAlertSpec":   schema_pkg_apis_alerts_v1alpha1_StorageAlertSpec(ref),
+		"github.com/monstorak/monstorak-operator/pkg/apis/alerts/v1alpha1.StorageAlertStatus": schema_pkg_apis_alerts_v1alpha1_StorageAlertStatus(ref),
+		"github.com/monstorak/monstorak-operator/pkg/apis/alerts/v1alpha1.StorageSpec":        schema_pkg_apis_alerts_v1alpha1_StorageSpec(ref),
 	}
 }
 
@@ -80,19 +80,19 @@ func schema_pkg_apis_alerts_v1alpha1_StorageAlert(ref common.ReferenceCallback) 
 					},
 					"spec": {
 						SchemaProps: spec.SchemaProps{
-							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertSpec"),
+							Ref: ref("github.com/monstorak/monstorak-operator/pkg/apis/alerts/v1alpha1.StorageAlertSpec"),
 						},
 					},
 					"status": {
 						SchemaProps: spec.SchemaProps{
-							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertStatus"),
+							Ref: ref("github.com/monstorak/monstorak-operator/pkg/apis/alerts/v1alpha1.StorageAlertStatus"),
 						},
 					},
 				},
 			},
 		},
 		Dependencies: []string{
-			"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertSpec", "github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageAlertStatus", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
+			"github.com/monstorak/monstorak-operator/pkg/apis/alerts/v1alpha1.StorageAlertSpec", "github.com/monstorak/monstorak-operator/pkg/apis/alerts/v1alpha1.StorageAlertStatus", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
 	}
 }
 
@@ -108,7 +108,7 @@ func schema_pkg_apis_alerts_v1alpha1_StorageAlertSpec(ref common.ReferenceCallba
 							Items: &spec.SchemaOrArray{
 								Schema: &spec.Schema{
 									SchemaProps: spec.SchemaProps{
-										Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageSpec"),
+										Ref: ref("github.com/monstorak/monstorak-operator/pkg/apis/alerts/v1alpha1.StorageSpec"),
 									},
 								},
 							},
@@ -116,14 +116,14 @@ func schema_pkg_apis_alerts_v1alpha1_StorageAlertSpec(ref common.ReferenceCallba
 					},
 					"prometheus": {
 						SchemaProps: spec.SchemaProps{
-							Ref: ref("github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.PrometheusSpec"),
+							Ref: ref("github.com/monstorak/monstorak-operator/pkg/apis/alerts/v1alpha1.PrometheusSpec"),
 						},
 					},
 				},
 			},
 		},
 		Dependencies: []string{
-			"github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.PrometheusSpec", "github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1.StorageSpec"},
+			"github.com/monstorak/monstorak-operator/pkg/apis/alerts/v1alpha1.PrometheusSpec", "github.com/monstorak/monstorak-operator/pkg/apis/alerts/v1alpha1.StorageSpec"},
 	}
 }
 

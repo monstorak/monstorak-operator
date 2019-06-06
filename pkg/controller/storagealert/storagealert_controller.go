@@ -6,9 +6,9 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 
-	"github.com/monstorak/monstorak/pkg/tasks"
+	"github.com/monstorak/monstorak-operator/pkg/tasks"
 
-	alertsv1alpha1 "github.com/monstorak/monstorak/pkg/apis/alerts/v1alpha1"
+	alertsv1alpha1 "github.com/monstorak/monstorak-operator/pkg/apis/alerts/v1alpha1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"

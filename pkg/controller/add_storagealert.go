@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/monstorak/monstorak/pkg/controller/storagealert"
+	"github.com/monstorak/monstorak-operator/pkg/controller/storagealert"
 )
 
 func init() {

@@ -7,8 +7,8 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/monstorak/monstorak/pkg/apis"
-	"github.com/monstorak/monstorak/pkg/controller"
+	"github.com/monstorak/monstorak-operator/pkg/apis"
+	"github.com/monstorak/monstorak-operator/pkg/controller"
 
 	"github.com/operator-framework/operator-sdk/pkg/k8sutil"
 	"github.com/operator-framework/operator-sdk/pkg/leader"
