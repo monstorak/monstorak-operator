@@ -8,7 +8,7 @@
                     "subdir": ""
                 }
             },
-            "version": "92eac24464e16c388c4486d4abc9143ab33f6c7a"
+            "version": "d22afe8c0da34490cb77e52a202eefcf4f62a869"
         },
         {
             "name": "noobaa-mixins",
@@ -18,7 +18,7 @@
                     "subdir": ""
                 }
             },
-            "version": "51e2dd529269f1be0b327e20b80559a8ecfb7559"
+            "version": "491ad39799829dc603023d0a2e96b1ea81e41a0a"
         },
         {
             "name": "gluster-mixins",
@@ -38,7 +38,7 @@
                     "subdir": "grafonnet"
                 }
             },
-            "version": "a6896d19aedc46ecf80dd64967191b9fd6f75f45"
+            "version": "bcd95ffa00fc4a58d34832f88f4b366effeb63ad"
         },
         {
             "name": "grafana-builder",
@@ -48,7 +48,7 @@
                     "subdir": "grafana-builder"
                 }
             },
-            "version": "a73d6c3e7f5804fc7a16f592b42a62384605046c"
+            "version": "c72a4e622232a051f4d6be8def626e208c687637"
         }
     ]
 }

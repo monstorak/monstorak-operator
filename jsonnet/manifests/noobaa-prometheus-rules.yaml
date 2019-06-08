@@ -9,28 +9,40 @@ metadata:
 spec:
   groups:
   - name: bucket-quota-alert.rules
+    rules: []
+  - name: resource-state-alert.rules
+    rules: []
+  - name: system-capacity-alert.rules
     rules:
-    - alert: NooBaaBucketQuotaWarning
+    - alert: NooBaaSystemCapacityWarning85
       annotations:
-        description: A NooBaa bucket is approaching its quota, usage is more than
+        description: A NooBaa system is approaching its capacity, usage is more than
           85%
-        message: A NooBaa Bucket Is Approaching Its Quota
+        message: A NooBaa System Is Approaching Its Capacity
         severity_level: warning
         storage_type: NooBaa
       expr: |
-        noobaa_bucket_quota{} > 0.85
+        noobaa_system_capacity{} > 85
       labels:
         severity: warning
-  - name: resource-state-alert.rules
-    rules:
-    - alert: NooBaaResourceErrorState
+    - alert: NooBaaSystemCapacityWarning95
       annotations:
-        description: A NooBaa resource is in error state for more than 2m.
-        message: A NooBaa Resource Is In Error State
-        severity_level: error
+        description: A NooBaa system is approaching its capacity, usage is more than
+          95%
+        message: A NooBaa System Is Approaching Its Capacity
+        severity_level: warning
         storage_type: NooBaa
       expr: |
-        noobaa_resource_health_status{} > 1
-      for: 2m
+        noobaa_system_capacity{} > 95
       labels:
-        severity: critical
+        severity: warning
+    - alert: NooBaaSystemCapacityWarning100
+      annotations:
+        description: A NooBaa system approached its capacity, usage is at 100%
+        message: A NooBaa System Approached Its Capacity
+        severity_level: warning
+        storage_type: NooBaa
+      expr: |
+        noobaa_system_capacity{} == 100
+      labels:
+        severity: warning
