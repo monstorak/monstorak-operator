@@ -32,6 +32,20 @@ spec:
       for: 5m
       labels:
         severity: warning
+  - name: ceph-mds-status
+    rules:
+    - alert: CephMdsMissingReplicas
+      annotations:
+        description: Minimum required replicas for storage metadata service not available.
+          Might affect the working of storage cluster.
+        message: Insufficient replicas for storage metadata service.
+        severity_level: warning
+        storage_type: ceph
+      expr: |
+        sum(ceph_mds_metadata{job="rook-ceph-mgr"} == 1) < 2
+      for: 5m
+      labels:
+        severity: warning
   - name: quorum-alert.rules
     rules:
     - alert: CephMonQuorumAtRisk
@@ -48,13 +62,13 @@ spec:
     - alert: CephMonHighNumberOfLeaderChanges
       annotations:
         description: 'Ceph Monitor "{{ $labels.job }}": instance {{ $labels.instance
-          }} has seen {{ $value }} leader changes recently.'
+          }} has seen {{ $value }} leader changes per minute recently.'
         message: Storage Cluster has seen many leader changes recently.
         severity_level: warning
         storage_type: ceph
       expr: |
-        rate(ceph_mon_num_elections{job="rook-ceph-mgr"}[15m]) > 3
-      for: 30m
+        rate(ceph_mon_num_elections{job="rook-ceph-mgr"}[5m]) * 60 > 0.95
+      for: 5m
       labels:
         severity: warning
   - name: ceph-node-alert.rules

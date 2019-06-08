@@ -4,20 +4,20 @@ metadata:
   name: monstorak
   namespace: storage-monitoring
   labels:
-     app: monstorak
+     app: monstorak-operator
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: monstorak
+      app: monstorak-operator
   template:
     metadata:
       labels:
-        app: monstorak
+        app: monstorak-operator
     spec:
       serviceAccountName: monstorak
       containers:
-      - image: "quay.io/monstorak/monstorak:a973958"
+      - image: "quay.io/monstorak/monstorak-operator:a973958"
         imagePullPolicy: Always
         name: monstorak
         env:
@@ -30,4 +30,4 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
-              value: "monstorak"
+              value: "monstorak-operator"
