@@ -5,7 +5,7 @@ ENV OPERATOR=/usr/local/bin/monstorak-operator \
     USER_NAME=monstorak
 
 # install operator binary
-COPY build/_output/bin/monstorak-operator ${OPERATOR}
+COPY out/monstorak-operator ${OPERATOR}
 
 COPY build/bin /usr/local/bin
 RUN  /usr/local/bin/user_setup
