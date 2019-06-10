@@ -51,6 +51,12 @@ build:  dependencies mixin $(BINDATA)
                 -o ./out/operator \
                 cmd/manager/main.go
 
+.PHONY: copy-crds
+## Copy CRD files to latest OLM manifests directory
+copy-crds:
+	mkdir -p ./manifests/monstorak-operator
+	$(Q)cp ./deploy/crds/*.yaml ./manifests/monstorak-operator/
+
 push:
 	docker push $(REPO):$(TAG)
 
