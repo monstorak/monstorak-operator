@@ -32,17 +32,18 @@ TAG=$(shell git rev-parse --short HEAD)
 # We need jsonnet on Travis; here we default to the user's installed jsonnet binary; if nothing is installed, then install go-jsonnet.
 JSONNET_BIN=$(if $(shell which jsonnet 2>/dev/null),$(shell which jsonnet 2>/dev/null),$(FIRST_GOPATH)/bin/jsonnet)
 JB_BIN=$(FIRST_GOPATH)/bin/jb
+DEP_BIN=$(FIRST_GOPATH)/bin/dep
 GOJSONTOYAML_BIN=$(FIRST_GOPATH)/bin/gojsontoyaml
 GOBINDATA_BIN=$(FIRST_GOPATH)/bin/go-bindata
 BINDATA=pkg/manifests/bindata.go
 
 all: build push
 
-build:  dependencies mixin $(BINDATA)
+build:  dependencies mixin $(BINDATA) ./vendor
 	operator-sdk build $(REPO):$(TAG)
 
 ./vendor: Gopkg.toml Gopkg.lock
-	$(Q)dep ensure ${V_FLAG} -vendor-only
+	$(Q)$(DEP_BIN) ensure ${V_FLAG} -vendor-only
 
 ./out/operator: ./vendor $(shell find . -path ./vendor -prune -o -name '*.go' -print)
 	$(Q)CGO_ENABLED=0 GOARCH=amd64 GOOS=linux \
@@ -74,7 +75,7 @@ mixin:
 	cd jsonnet && ${JB_BIN} update && \
 	./build-jsonnet.sh
 
-dependencies: $(JB_BIN) $(JSONNET_BIN) $(GOBINDATA_BIN) $(GOJSONTOYAML_BIN)
+dependencies: $(JB_BIN) $(JSONNET_BIN) $(GOBINDATA_BIN) $(GOJSONTOYAML_BIN) $(DEP_BIN)
 
 $(GOBINDATA_BIN):
 	go get -u github.com/jteeuwen/go-bindata/...
@@ -84,6 +85,9 @@ $(GOJSONTOYAML_BIN):
 
 $(JB_BIN):
 	go get -u github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
+
+$(DEP_BIN):
+	go get -u github.com/golang/dep/cmd/dep
 
 $(JSONNET_BIN):
 	go get github.com/google/go-jsonnet/cmd/jsonnet
