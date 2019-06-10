@@ -19,6 +19,9 @@ const (
 func CreateOrUpdatePrometheusRule(p *monv1.PrometheusRule) error {
 	ruleLog.WithValues("Prometheus Rule", p.GetName(), "Namespace", p.GetNamespace())
 	mclient, err := newMonitoringClient()
+	if err != nil {
+		return err
+	}
 	pclient := mclient.MonitoringV1().PrometheusRules(p.GetNamespace())
 	oldRule, err := pclient.Get(p.GetName(), metav1.GetOptions{})
 	if apierrors.IsNotFound(err) {

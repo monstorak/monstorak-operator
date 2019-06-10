@@ -15,7 +15,10 @@ const (
 func ServiceMonitorExists(serviceMonitorName, namespace string) (*monitoringv1.ServiceMonitor, error) {
 	smLog.WithValues("Service Monitor", serviceMonitorName, "Namespace", namespace)
 	serviceMonitorClient, err := newMonitoringClient()
-	serviceMonitor, err := serviceMonitorClient.Monitoring().ServiceMonitors(namespace).Get(serviceMonitorName, metav1.GetOptions{})
+	if err != nil {
+		return nil, err
+	}
+	serviceMonitor, err := serviceMonitorClient.MonitoringV1().ServiceMonitors(namespace).Get(serviceMonitorName, metav1.GetOptions{})
 	if err != nil {
 		smLog.Error(err, ServiceMonitorNotFound)
 		return nil, err

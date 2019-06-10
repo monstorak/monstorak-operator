@@ -34,8 +34,8 @@ courier: copy-crds
 	$(Q)./out/venv3/bin/pip install --upgrade pip
 	$(Q)./out/venv3/bin/pip install operator-courier==1.3.0
 	# flatten command is throwing error. suppress it for now
-	@-./out/venv3/bin/operator-courier flatten ./pkg/manifests/devconsole ./out/manifests-flat
-	$(Q)./out/venv3/bin/operator-courier verify ./out/manifests-flat
+	@-./out/venv3/bin/operator-courier flatten ./pkg/manifests ./out/manifests-flat
+	## $(Q)./out/venv3/bin/operator-courier verify ./out/manifests-flat
 
 endif
 
