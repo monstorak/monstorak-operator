@@ -38,8 +38,7 @@ BINDATA=pkg/manifests/bindata.go
 
 all: build push
 
-build:  dependencies mixin $(BINDATA) ./vendor
-	operator-sdk build $(REPO):$(TAG)
+build:  dependencies mixin $(BINDATA) ./out/operator
 
 ./vendor: Gopkg.toml Gopkg.lock
 	$(Q)dep ensure ${V_FLAG} -vendor-only
