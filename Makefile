@@ -47,7 +47,7 @@ build:  dependencies mixin $(BINDATA) ./out/operator
 	$(Q)CGO_ENABLED=0 GOARCH=amd64 GOOS=linux \
                 go build ${V_FLAG} \
                 -ldflags "-X ${GO_PACKAGE_PATH}/cmd/manager.Commit=${GIT_COMMIT_ID} -X ${GO_PACKAGE_PATH}/cmd/manager.BuildTime=${BUILD_TIME}" \
-                -o ./out/monstorak-operator \
+                -o build/_output/bin/monstorak-operator \
                 cmd/manager/main.go
 
 .PHONY: copy-crds
