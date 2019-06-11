@@ -5,7 +5,7 @@ LABEL author "UmangaChapagain <uchapaga@redhat.com>"
 
 ENV LANG=en_US.utf8
 
-COPY operator /usr/local/bin/monstorak-operator
+COPY monstorak-operator /usr/local/bin/monstorak-operator
 USER 10001
 
 ENTRYPOINT [ "/usr/local/bin/monstorak-operator" ]
