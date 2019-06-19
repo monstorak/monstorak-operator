@@ -108,7 +108,8 @@ func main() {
 	// Create Service object to expose the metrics port.
 	_, err = metrics.ExposeMetricsPort(ctx, metricsPort)
 	if err != nil {
-		log.Info(err.Error())
+		// log the error, if any
+		log.Error(err, err.Error())
 	}
 
 	log.Info("Starting the Cmd.")
